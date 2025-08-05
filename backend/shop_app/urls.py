@@ -17,11 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
-import core
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/',include('core.urls')),
-    path('', include('dj_rest_auth.urls')),
-    path('registration/', include('dj_rest_auth.registration.urls')),
+    path('core/', include('core.urls')),
 ]
