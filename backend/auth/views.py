@@ -3,7 +3,7 @@ from .serializers import RegisterSerializer
 from core.models import User
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 
@@ -37,3 +37,13 @@ class LoginView(APIView):
                 'username':user.username
             })
         return Response({'error':'Invalid credential'},status=status.HTTP_401_UNAUTHORIZED)
+    
+
+class LogoutView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        request.user.auth_token.delete()
+        return Response({
+            'message':"Logged out successfully"
+        },status=status.HTTP_200_OK)
