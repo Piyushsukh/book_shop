@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .serializers import RegisterSerializer 
-from .models import User
+from core.models import User
 from rest_framework.permissions import AllowAny
 
 
