@@ -27,4 +27,5 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save() 
         token,create=Token.objects.get_or_create(user=user)
+        return user
         
