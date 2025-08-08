@@ -18,6 +18,6 @@ class Book(models.Model):
     last_sold=models.DateTimeField(null=True)
     subject=models.ForeignKey(Subject,on_delete=models.PROTECT,null=True)
     author=models.ForeignKey(Author,on_delete=models.PROTECT,null=True)
-    publisher=models.ForeignKey(Author,on_delete=models.PROTECT,null=True)
+    publisher=models.ForeignKey(Publisher,on_delete=models.PROTECT,null=True)
 
 
