@@ -13,11 +13,11 @@ class Book(models.Model):
     name=models.CharField()
     price=models.IntegerField()
     discount=models.IntegerField()
-    image=models.ImageField()
-    preview=models.FileField()
-    last_sold=models.DateTimeField()
-    subject=models.ForeignKey(Subject,on_delete=models.PROTECT)
-    author=models.ForeignKey(Author,on_delete=models.PROTECT)
-    publisher=models.ForeignKey(Author,on_delete=models.PROTECT)
+    image=models.ImageField(null=True)
+    preview=models.FileField(null=True)
+    last_sold=models.DateTimeField(null=True)
+    subject=models.ForeignKey(Subject,on_delete=models.PROTECT,null=True)
+    author=models.ForeignKey(Author,on_delete=models.PROTECT,null=True)
+    publisher=models.ForeignKey(Author,on_delete=models.PROTECT,null=True)
 
 
