@@ -11,6 +11,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final list = [
+      'All',
+      'Education',
+      'Novel',
+      'Story Telling',
+      'Fictional',
+      'Non Fictional',
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
@@ -31,7 +39,7 @@ class _HomeState extends State<Home> {
                     size: 30,
                   ),
                 ),
-                CustomButton(text: 'Shop', onPressed: () {}),
+                CustomButton(text: 'Sign in', onPressed: () {}),
               ],
             ),
           ),
@@ -41,20 +49,32 @@ class _HomeState extends State<Home> {
         children: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  suffix: Text('Search'),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: TextButton(onPressed: () {}, child: Text('Search')),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
                 ),
               ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(border: Border.all()),
+            height: 60,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: list.length,
+              itemBuilder: (context, i) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Chip(label: Text(list[i])),
+                );
+              },
             ),
           ),
         ],
