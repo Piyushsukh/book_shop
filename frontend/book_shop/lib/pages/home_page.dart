@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
     ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: IconButton(
           onPressed: () {},
           icon: Icon(Icons.menu, color: Colors.white, size: 30),
@@ -47,8 +47,25 @@ class _HomeState extends State<Home> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              border: Border.all(),
+            ),
+            height: 60,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: list.length,
+              itemBuilder: (context, i) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Chip(label: Text(list[i])),
+                );
+              },
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
@@ -63,19 +80,15 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(border: Border.all()),
-            height: 60,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: list.length,
-              itemBuilder: (context, i) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Chip(label: Text(list[i])),
-                );
-              },
-            ),
+
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Chip(label: Text('Subjects')),
+              Chip(label: Text('Author')),
+              Chip(label: Text('Publisher')),
+            ],
           ),
         ],
       ),

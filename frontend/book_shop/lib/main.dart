@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurpleAccent,
-          primary: Colors.purple,
+          primary: const Color.fromARGB(255, 131, 4, 154),
+          secondary: const Color.fromARGB(255, 166, 21, 192),
         ),
       ),
       debugShowCheckedModeBanner: false,
