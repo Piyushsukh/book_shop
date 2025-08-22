@@ -85,9 +85,27 @@ class _HomeState extends State<Home> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Chip(label: Text('Subjects')),
-              Chip(label: Text('Author')),
-              Chip(label: Text('Publisher')),
+              Chip(
+                label: Text(
+                  'Subjects',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
+              ),
+              Chip(
+                label: Text(
+                  'Author',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
+              ),
+              Chip(
+                label: Text(
+                  'Publisher',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
+              ),
             ],
           ),
         ],
