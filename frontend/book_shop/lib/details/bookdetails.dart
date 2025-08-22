@@ -4,7 +4,7 @@ class Book {
   final String bookName;
   final String price;
   final DateTime publishDate;
-  final Image bookImage;
+  final String imageUrl;
   final String authorName;
   final String publisherName;
   final String subject;
@@ -12,7 +12,7 @@ class Book {
   const Book({
     required this.bookName,
     required this.price,
-    required this.bookImage,
+    required this.imageUrl,
     required this.authorName,
     required this.publisherName,
     required this.publishDate,

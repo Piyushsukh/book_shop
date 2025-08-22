@@ -16,6 +16,7 @@ class BookList extends StatelessWidget {
             return Card(
               child: Row(
                 children: [
+                  Image.network(book[i].imageUrl),
                   Column(
                     children: [
                       Text('Title :${book[i].bookName}'),
