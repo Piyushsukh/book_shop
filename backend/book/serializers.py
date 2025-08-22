@@ -7,4 +7,4 @@ class BookSerializer(serializers.ModelSerializer):
     subject=serializers.StringRelatedField()
     class Meta:
         model=Book
-        fields=('name','price','discount','author','publisher','image','preview','last_sold','subject')
+        fields=('name','price','discount','author','publisher','image','preview','last_sold','subject','synopsis')

@@ -18,6 +18,7 @@ class Publisher(models.Model):
 class Book(models.Model):
     name=models.CharField()
     price=models.IntegerField()
+    synopsis=models.CharField()
     discount=models.IntegerField()
     image=models.ImageField(null=True)
     preview=models.FileField(null=True)
