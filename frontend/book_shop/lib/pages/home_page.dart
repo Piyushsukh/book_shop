@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:book_shop/Common/Widgets/custom_button.dart';
+import 'package:book_shop/details/bookdetails.dart';
+import 'package:book_shop/pages/sign_in.dart';
+import 'package:book_shop/widgets/books.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,6 +15,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Future<List<Book>> fetchBook() async {
+    try {
+      final response = await http.get(Uri.parse('http://127.0.0.1:8000/book'));
+      List jsonData = jsonDecode(response.body);
+      return jsonData.map((book) => Book.fromJSON(book)).toList();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final list = [
@@ -39,7 +55,14 @@ class _HomeState extends State<Home> {
                     size: 30,
                   ),
                 ),
-                CustomButton(text: 'Sign in', onPressed: () {}),
+                CustomButton(
+                  text: 'Sign in',
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => SignIn()),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -107,6 +130,12 @@ class _HomeState extends State<Home> {
                 shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
               ),
             ],
+          ),
+          FutureBuilder(
+            future: fetchBook(),
+            builder: (context, snapshot) {
+              return BookList(book: snapshot.data);
+            },
           ),
         ],
       ),
