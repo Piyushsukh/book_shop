@@ -119,6 +119,8 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "10.171.252.143"]
+
 USE_TZ = True
 
 
