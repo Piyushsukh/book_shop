@@ -66,17 +66,3 @@ class BookList extends StatelessWidget {
     );
   }
 }
-
-  // data.map((book) => Book.fromJSON(book)).toList();
-  // Future<List<Book>> fetchBook() async {
-  //   final response = await http.get(Uri.parse("http://127.0.0.1:8000/book/"));
-
-  //   if (response.statusCode == 200) {
-  //     final List<dynamic> data = jsonDecode(response.body);
-  //     print(data);
-  //     print(data.map((book) => Book.fromJSON(book)).toList());
-  //     return data.map((book) => Book.fromJSON(book)).toList();
-  //   } else {
-  //     throw Exception("Failed to load books");
-  //   }
-  // }

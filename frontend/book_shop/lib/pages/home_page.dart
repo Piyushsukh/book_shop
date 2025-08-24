@@ -17,10 +17,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Future<List<Book>> fetchBook() async {
     try {
-      final response = await http.get(Uri.parse('http://127.0.0.1:8000/book'));
+      print('hi');
+      final response = await http.get(
+        Uri.parse('http://10.171.252.143:8000/book'),
+      );
       List jsonData = jsonDecode(response.body);
+      print(jsonData);
       return jsonData.map((book) => Book.fromJSON(book)).toList();
     } catch (e) {
+      print(e);
       throw e.toString();
     }
   }
@@ -56,7 +61,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 CustomButton(
-                  text: 'Sign in',
+                  text: 'Sign up',
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => SignIn()),
@@ -134,6 +139,7 @@ class _HomeState extends State<Home> {
           FutureBuilder(
             future: fetchBook(),
             builder: (context, snapshot) {
+              print(snapshot.data);
               return BookList(book: snapshot.data);
             },
           ),

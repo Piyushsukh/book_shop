@@ -1,27 +1,27 @@
-import 'package:book_shop/pages/log_in.dart';
+import 'package:book_shop/pages/sign_in.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
+class LogIn extends StatelessWidget {
+  const LogIn({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<String> textField = [
-      "First name",
-      "Last name",
-      "Email",
-      "Password",
-      "Confirm password",
-    ];
+    final size = MediaQuery.of(context).size;
+    List<String> textField = ['Username', 'Password'];
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar: AppBar(title: Text('Log In')),
       body: Container(
         decoration: BoxDecoration(
           border: Border.all(width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
         padding: EdgeInsets.all(26),
-        margin: EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 50),
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: size.height / 6,
+          bottom: size.height / 5,
+        ),
         child: Column(
           children: [
             Flexible(
@@ -53,7 +53,7 @@ class SignIn extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 maximumSize: Size(double.infinity, 50),
               ),
-              child: Text('Sign Up'),
+              child: Text('Log In'),
             ),
             SizedBox(height: 10),
             Text('OR', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -68,11 +68,11 @@ class SignIn extends StatelessWidget {
             SizedBox(height: 10),
             Row(
               children: [
-                Text('Have an account?'),
+                Text('Don\'t Have an account?'),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LogIn()),
+                      MaterialPageRoute(builder: (context) => SignIn()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -81,7 +81,7 @@ class SignIn extends StatelessWidget {
                     padding: EdgeInsets.zero,
                   ),
                   child: Text(
-                    "Login",
+                    "Signup",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
                 ),
