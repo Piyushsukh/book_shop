@@ -34,8 +34,9 @@ class LoginView(APIView):
             return Response({
                 'token':token.key,
                 'user_id':user.id,
-                'username':user.username
-            })
+                'username':user.username,
+            
+            },status=status.HTTP_200_OK)
         return Response({'error':'Invalid credential'},status=status.HTTP_401_UNAUTHORIZED)
     
 

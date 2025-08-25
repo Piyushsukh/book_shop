@@ -1,4 +1,6 @@
+import 'package:book_shop/pages/home_page.dart';
 import 'package:book_shop/pages/log_in.dart';
+import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -9,9 +11,36 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  Future<void> _handlesignup() async {
+    try {
+      final data = await register(
+        textEditingController[0].text,
+        textEditingController[1].text,
+        textEditingController[2].text,
+        textEditingController[3].text,
+        textEditingController[4].text,
+        textEditingController[5].text,
+      );
+      if (!mounted) {
+        return;
+      }
+      if (data['key'] != null) {
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Registration failed')));
+    }
+  }
+
   List<String> textField = [
     "First name",
     "Last name",
+    "Username",
     "Email",
     "Password",
     "Confirm password",
@@ -74,7 +103,7 @@ class _SignInState extends State<SignIn> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _handlesignup,
               style: ElevatedButton.styleFrom(
                 maximumSize: Size(double.infinity, 50),
               ),

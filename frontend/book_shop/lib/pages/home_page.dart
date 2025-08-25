@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:book_shop/Common/Widgets/custom_button.dart';
+import 'package:book_shop/Secrets/secret.dart';
+import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
-import 'package:book_shop/pages/sign_in.dart';
+import 'package:book_shop/pages/sign_up.dart';
 import 'package:book_shop/widgets/books.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,16 +17,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool isAuth = false;
+
   Future<List<Book>> fetchBook() async {
     try {
-      final response = await http.get(
-        Uri.parse('http://10.171.252.143:8000/book'),
-      );
+      final response = await http.get(Uri.parse('$url/book'));
       List jsonData = jsonDecode(response.body);
       return jsonData.map((book) => Book.fromJSON(book)).toList();
     } catch (e) {
       throw e.toString();
     }
+  }
+
+  Future<void> check() async {
+    if (await isLoggedIn()) {
+      setState(() {
+        isAuth = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    check();
   }
 
   @override
@@ -57,14 +73,15 @@ class _HomeState extends State<Home> {
                     size: 30,
                   ),
                 ),
-                CustomButton(
-                  text: 'Sign up',
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => SignIn()),
-                    );
-                  },
-                ),
+                if (!isAuth)
+                  CustomButton(
+                    text: 'Sign up',
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => SignIn()),
+                      );
+                    },
+                  ),
               ],
             ),
           ),

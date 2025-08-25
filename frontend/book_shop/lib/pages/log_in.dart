@@ -1,5 +1,8 @@
-import 'package:book_shop/pages/sign_in.dart';
+import 'package:book_shop/pages/home_page.dart';
+import 'package:book_shop/pages/sign_up.dart';
 import 'package:flutter/material.dart';
+
+import 'package:book_shop/auth_service/auth_service.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -9,8 +12,31 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  Future<void> _handlelogin() async {
+    try {
+      final data = await login(
+        textEditingController[0].text,
+        textEditingController[1].text,
+      );
+      if (!mounted) {
+        return;
+      }
+      if (data['token'] != null) {
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Invalid credentials')));
+    }
+  }
+
   List<String> textField = ['Username', 'Password'];
   List<TextEditingController> textEditingController = [];
+
   @override
   void initState() {
     super.initState();
@@ -73,7 +99,7 @@ class _LogInState extends State<LogIn> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _handlelogin,
               style: ElevatedButton.styleFrom(
                 maximumSize: Size(double.infinity, 50),
               ),
