@@ -1,20 +1,40 @@
 import 'package:book_shop/pages/log_in.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
   @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  List<String> textField = [
+    "First name",
+    "Last name",
+    "Email",
+    "Password",
+    "Confirm password",
+  ];
+
+  List<TextEditingController> textEditingController = [];
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < textField.length; i++) {
+      textEditingController.add(TextEditingController());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<String> textField = [
-      "First name",
-      "Last name",
-      "Email",
-      "Password",
-      "Confirm password",
-    ];
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar: AppBar(
+        title: Text(
+          'Sign Up',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           border: Border.all(width: 2),
@@ -24,6 +44,10 @@ class SignIn extends StatelessWidget {
         margin: EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 50),
         child: Column(
           children: [
+            Text(
+              'Sign Up',
+              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+            ),
             Flexible(
               child: ListView.builder(
                 itemCount: textField.length,
@@ -36,6 +60,7 @@ class SignIn extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
+                        controller: textEditingController[index],
                         decoration: InputDecoration(
                           hintText: textField[index],
                           enabledBorder: OutlineInputBorder(),

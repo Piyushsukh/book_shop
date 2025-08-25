@@ -10,7 +10,7 @@ class BookList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(6),
         child: ListView.builder(
           itemCount: book == null ? 0 : book!.length,
           itemBuilder: (context, i) {
@@ -44,13 +44,6 @@ class BookList extends StatelessWidget {
                                   Divider(),
                                   Text(
                                     'Published Date :${DateFormat.yMMMd().format(book![i].publishDate)}',
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Synopsis:${book![i].synopsis}',
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
                                   ),
                                 ],
                               ),

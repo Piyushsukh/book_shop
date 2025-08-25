@@ -10,7 +10,6 @@ class Book {
   final String authorName;
   final String publisherName;
   final String subject;
-  final String synopsis;
   final String preview;
   const Book({
     required this.bookName,
@@ -22,7 +21,6 @@ class Book {
     required this.authorName,
     required this.publisherName,
     required this.publishDate,
-    required this.synopsis,
     required this.subject,
   });
 
@@ -37,7 +35,6 @@ class Book {
       authorName: map['author'] as String,
       publisherName: map['publisher'] as String,
       subject: map['subject'] as String,
-      synopsis: map['synopsis'] as String,
       discount: map['discount'] as int,
     );
   }
