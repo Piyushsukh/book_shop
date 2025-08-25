@@ -28,6 +28,9 @@ class _SignInState extends State<SignIn> {
         Navigator.of(
           context,
         ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Registered Successfully')));
       }
     } catch (e) {
       if (!mounted) return;
@@ -58,6 +61,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Sign Up',

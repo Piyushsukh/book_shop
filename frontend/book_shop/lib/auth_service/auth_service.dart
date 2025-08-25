@@ -54,5 +54,6 @@ Future<Map<String, dynamic>> register(
 
 Future<bool> isLoggedIn() async {
   String? token = await storage.read(key: 'token');
+  storage.delete(key: 'token');
   return token != null;
 }

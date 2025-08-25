@@ -25,6 +25,10 @@ class _LogInState extends State<LogIn> {
         Navigator.of(
           context,
         ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Logged In Successfully')));
       }
     } catch (e) {
       if (!mounted) return;
@@ -49,6 +53,7 @@ class _LogInState extends State<LogIn> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Log In',

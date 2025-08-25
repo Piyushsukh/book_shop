@@ -1,4 +1,3 @@
-import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
