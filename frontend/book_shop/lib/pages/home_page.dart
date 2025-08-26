@@ -4,6 +4,7 @@ import 'package:book_shop/Common/Widgets/custom_button.dart';
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
+import 'package:book_shop/pages/log_in.dart';
 import 'package:book_shop/pages/sign_up.dart';
 import 'package:book_shop/widgets/books.dart';
 import 'package:flutter/material.dart';
@@ -72,20 +73,26 @@ class _HomeState extends State<Home> {
       'Non Fictional',
     ];
     return Scaffold(
+      floatingActionButton: isAuth
+          ? FloatingActionButton(onPressed: () {}, child: Icon(Icons.add))
+          : null,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              icon: Icon(Icons.menu, color: Colors.white, size: 30),
-            );
-          },
-        ),
+        leading: isAuth
+            ? Builder(
+                builder: (context) {
+                  return IconButton(
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: Icon(Icons.menu, color: Colors.white, size: 30),
+                  );
+                },
+              )
+            : null,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -101,10 +108,10 @@ class _HomeState extends State<Home> {
                 ),
                 if (!isAuth)
                   CustomButton(
-                    text: 'Sign up',
+                    text: 'Log in',
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => SignIn()),
+                        MaterialPageRoute(builder: (context) => LogIn()),
                       );
                     },
                   ),
@@ -144,7 +151,44 @@ class _HomeState extends State<Home> {
             ListTile(
               title: Text('Logout'),
               leading: Icon(Icons.logout),
-              onTap: logOut,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      title: Text(
+                        'Log out',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      content: Text('Are you sure?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            logOut();
+                          },
+                          child: Text(
+                            'Log out',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -194,21 +238,30 @@ class _HomeState extends State<Home> {
                   'Subjects',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1),
+                  borderRadius: BorderRadiusGeometry.circular(15),
+                ),
               ),
               Chip(
                 label: Text(
                   'Author',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1),
+                  borderRadius: BorderRadiusGeometry.circular(15),
+                ),
               ),
               Chip(
                 label: Text(
                   'Publisher',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                shape: ContinuousRectangleBorder(side: BorderSide(width: 1)),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1),
+                  borderRadius: BorderRadiusGeometry.circular(15),
+                ),
               ),
             ],
           ),
