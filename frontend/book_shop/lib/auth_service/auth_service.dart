@@ -23,23 +23,23 @@ Future<Map<String, dynamic>> login(String username, String password) async {
 }
 
 Future<Map<String, dynamic>> register(
-  String first_name,
-  String last_name,
+  String firstName,
+  String lastName,
   String username,
   String email,
   String password,
-  String confirm_password,
+  String confirmPassword,
 ) async {
   final response = await http.post(
     Uri.parse('$url/auth/register/'),
     headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     body: jsonEncode({
-      'first_name': first_name,
-      'last_name': last_name,
+      'first_name': firstName,
+      'last_name': lastName,
       'username': username,
       'email': email,
       'password': password,
-      'confirm_password': confirm_password,
+      'confirm_password': confirmPassword,
     }),
   );
   if (response.statusCode != 201) {
@@ -54,6 +54,23 @@ Future<Map<String, dynamic>> register(
 
 Future<bool> isLoggedIn() async {
   String? token = await storage.read(key: 'token');
-  storage.delete(key: 'token');
   return token != null;
+}
+
+Future<bool> loggingOut() async {
+  String? token = await storage.read(key: 'token');
+  final response = await http.post(
+    Uri.parse('$url/auth/logout/'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Token $token',
+    },
+  );
+  if ((response.statusCode == 200)) {
+    await storage.delete(key: 'token');
+    return true;
+  } else {
+    return false;
+  }
 }

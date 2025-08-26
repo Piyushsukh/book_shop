@@ -19,6 +19,24 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isAuth = false;
 
+  Future<void> logOut() async {
+    Navigator.of(context).pop();
+    if (await loggingOut()) {
+      setState(() {
+        isAuth = false;
+        if (!mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Log out Successfully')));
+      });
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Log out Failed')));
+    }
+  }
+
   Future<List<Book>> fetchBook() async {
     try {
       final response = await http.get(Uri.parse('$url/book'));
@@ -56,9 +74,17 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.menu, color: Colors.white, size: 30),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu, color: Colors.white, size: 30),
+            );
+          },
         ),
         actions: [
           Padding(
@@ -86,6 +112,42 @@ class _HomeState extends State<Home> {
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        shape: Border.all(width: 0),
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              child: Text(
+                '''Welcome 
+           User''',
+
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Home'),
+              leading: Icon(Icons.home),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(title: Text('Prfile'), leading: Icon(Icons.person)),
+            ListTile(title: Text('Settings'), leading: Icon(Icons.settings)),
+            ListTile(
+              title: Text('Logout'),
+              leading: Icon(Icons.logout),
+              onTap: logOut,
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
