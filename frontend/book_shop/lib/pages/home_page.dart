@@ -4,8 +4,8 @@ import 'package:book_shop/Common/Widgets/custom_button.dart';
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
+import 'package:book_shop/pages/add_book.dart';
 import 'package:book_shop/pages/log_in.dart';
-import 'package:book_shop/pages/sign_up.dart';
 import 'package:book_shop/widgets/books.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -74,7 +74,20 @@ class _HomeState extends State<Home> {
     ];
     return Scaffold(
       floatingActionButton: isAuth
-          ? FloatingActionButton(onPressed: () {}, child: Icon(Icons.add))
+          ? Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 15,
+              ),
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => AddBook()));
+                },
+                child: Icon(Icons.add),
+              ),
+            )
           : null,
       appBar: AppBar(
         automaticallyImplyLeading: false,
