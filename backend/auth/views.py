@@ -56,6 +56,8 @@ class UserView(APIView):
     def get(self,request):
         user=request.user
         return Response({
+            'first_name':user.first_name,
+            'last_name':user.last_name,
             "username":user.username,
             "email":user.email,
             "is_active":user.is_active
@@ -71,7 +73,7 @@ class PasswordResetView(APIView):
         new_password=request.data.get('new_password')
 
         if not user.check_password(old_password):
-            return Response({'error':'old password is incorrect'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error':'old password is incorrect'},status=status.HTTP_404_NOT_FOUND)
          
         if not new_password:
             return Response({'error':'New password is required'},status=status.HTTP_400_BAD_REQUEST)
