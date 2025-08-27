@@ -1,7 +1,29 @@
+import 'package:book_shop/auth_service/auth_service.dart';
+import 'package:book_shop/pages/change_password.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  Map<String, dynamic>? user;
+
+  Future<void> fetchUser() async {
+    final data = await getUser();
+    setState(() {
+      user = data;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +43,27 @@ class ProfilePage extends StatelessWidget {
                 child: Icon(Icons.person, size: 50, color: Colors.white),
               ),
             ),
-            Text(
-              'Piyush Sukhwani',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            Text(
-              'piyush@gmail.com',
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-            ),
+            user != null
+                ? Text(
+                    '${user!['first_name']} ${user!['last_name']}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  )
+                : CircularProgressIndicator(),
+            user != null
+                ? Text(
+                    user!['email'],
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                  )
+                : CircularProgressIndicator(),
             Divider(color: Colors.grey),
             ListTile(
               title: Text('Change Password'),
               leading: Icon(Icons.lock, color: Colors.deepPurple),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ChangePassword()),
+                );
+              },
             ),
             ListTile(
               title: Text('Log out'),

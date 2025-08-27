@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 final storage = FlutterSecureStorage();
+late final user;
 
 Future<Map<String, dynamic>> login(String username, String password) async {
   final response = await http.post(
@@ -64,4 +65,41 @@ Future<bool> loggingOut() async {
   }
   await storage.delete(key: 'token');
   return true;
+}
+
+Future<Map<String, dynamic>?> getUser() async {
+  try {
+    final token = await storage.read(key: 'token');
+    if (token == null) return null;
+    final response = await http.get(
+      Uri.parse('$url/auth/user/'),
+      headers: {'Authorization': 'Token $token'},
+    );
+    Map<String, dynamic> data = jsonDecode(response.body);
+    return data;
+  } catch (e) {
+    throw Exception(e);
+  }
+}
+
+Future<bool> changePassword(String oldPassword, String newPassword) async {
+  try {
+    final token = await storage.read(key: 'token');
+    final response = await http.post(
+      Uri.parse('$url/auth/password_reset/'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Token $token',
+      },
+      body: jsonEncode({
+        'old_password': oldPassword,
+        'new_password': newPassword,
+      }),
+    );
+    if (response.statusCode == 200) return true;
+    return false;
+  } catch (e) {
+    throw Exception(e);
+  }
 }

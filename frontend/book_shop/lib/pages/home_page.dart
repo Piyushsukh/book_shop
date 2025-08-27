@@ -40,9 +40,10 @@ class _HomeState extends State<Home> {
 
   Future<List<Book>> fetchBook() async {
     try {
-      final response = await http.get(Uri.parse('$url/book'));
+      final response = await http.get(Uri.parse('$url/book/'));
       List jsonData = jsonDecode(response.body);
-      return jsonData.map((book) => Book.fromJSON(book)).toList();
+      final map = jsonData.map((book) => Book.fromJSON(book)).toList();
+      return map;
     } catch (e) {
       throw e.toString();
     }

@@ -63,7 +63,9 @@ class _SettingPageState extends State<SettingPage> {
               });
             },
             title: Text('Dark mode'),
-            secondary: Icon(Icons.dark_mode),
+            secondary: Icon(
+              isDark ? Icons.dark_mode : Icons.dark_mode_outlined,
+            ),
           ),
           Divider(),
           SwitchListTile(
@@ -74,7 +76,11 @@ class _SettingPageState extends State<SettingPage> {
               });
             },
             title: Text('Notifications'),
-            secondary: Icon(Icons.notifications),
+            secondary: Icon(
+              isNotificationOn
+                  ? Icons.notifications_active
+                  : Icons.notifications,
+            ),
           ),
           Divider(),
           ListTile(
