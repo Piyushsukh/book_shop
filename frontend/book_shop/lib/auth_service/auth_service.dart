@@ -59,18 +59,9 @@ Future<bool> isLoggedIn() async {
 
 Future<bool> loggingOut() async {
   String? token = await storage.read(key: 'token');
-  final response = await http.post(
-    Uri.parse('$url/auth/logout/'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Token $token',
-    },
-  );
-  if ((response.statusCode == 200)) {
-    await storage.delete(key: 'token');
-    return true;
-  } else {
-    return false;
+  if (token == null) {
+    throw Exception('Already Logged out');
   }
+  await storage.delete(key: 'token');
+  return true;
 }
