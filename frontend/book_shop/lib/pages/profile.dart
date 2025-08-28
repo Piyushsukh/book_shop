@@ -29,7 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
         title: Text('My Account', style: TextStyle(color: Colors.white)),
       ),
       body: Center(
@@ -56,6 +55,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
                 : CircularProgressIndicator(),
             Divider(color: Colors.grey),
+            ListTile(
+              title: Text('My books'),
+              leading: Icon(Icons.book_sharp, color: Colors.deepPurple),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ChangePassword()),
+                );
+              },
+            ),
             ListTile(
               title: Text('Change Password'),
               leading: Icon(Icons.lock, color: Colors.deepPurple),

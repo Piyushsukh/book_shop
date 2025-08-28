@@ -39,7 +39,6 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
         title: Text('Settings', style: TextStyle(color: Colors.white)),
       ),
       body: ListView(

@@ -9,7 +9,7 @@ import 'package:book_shop/pages/log_in.dart';
 import 'package:book_shop/pages/profile.dart';
 import 'package:book_shop/pages/settings.dart';
 import 'package:book_shop/widgets/books.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AddBookPage;
 import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
@@ -83,7 +83,9 @@ class _HomeState extends State<Home> {
               child: FloatingActionButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const AddBook()),
+                    MaterialPageRoute(
+                      builder: (context) => const AddBookPage(),
+                    ),
                   );
                 },
                 child: const Icon(Icons.add),

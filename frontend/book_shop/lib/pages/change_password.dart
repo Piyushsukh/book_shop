@@ -45,7 +45,6 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Change your password',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
