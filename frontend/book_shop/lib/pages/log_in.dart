@@ -1,3 +1,4 @@
+import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/pages/home_page.dart';
 import 'package:book_shop/pages/sign_up.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _LogInState extends State<LogIn> {
         return;
       }
       if (data['token'] != null) {
+        isAuth = true;
         Navigator.of(
           context,
         ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));

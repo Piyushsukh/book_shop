@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:book_shop/Common/Widgets/custom_button.dart';
+import 'package:book_shop/Common/fetchUser.dart';
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
@@ -9,7 +10,7 @@ import 'package:book_shop/pages/log_in.dart';
 import 'package:book_shop/pages/profile.dart';
 import 'package:book_shop/pages/settings.dart';
 import 'package:book_shop/widgets/books.dart';
-import 'package:flutter/material.dart' hide AddBookPage;
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
@@ -20,6 +21,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Future<void> getUserData() async {
+    setState(() {
+      fetchUser();
+    });
+  }
+
   Future<void> logOut() async {
     Navigator.of(context).pop();
     if (await loggingOut()) {
@@ -61,6 +68,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     check();
+    getUserData();
   }
 
   @override
@@ -136,94 +144,102 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      drawer: Drawer(
-        shape: Border.all(width: 0),
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              child: const Text(
-                '''Welcome 
-           User''',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Home'),
-              leading: const Icon(Icons.home),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: const Text('Profile'),
-              leading: const Icon(Icons.person),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Settings'),
-              leading: const Icon(Icons.settings),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const SettingPage()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              leading: const Icon(Icons.logout),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      title: const Text(
-                        'Log out',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      content: const Text('Are you sure?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            logOut();
-                          },
-                          child: const Text(
-                            'Log out',
-                            style: TextStyle(color: Colors.red),
-                          ),
+      drawer: isAuth
+          ? Drawer(
+              shape: Border.all(width: 0),
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: user != null
+                        ? Text(
+                            '''Welcome 
+           ${user!['first_name']}''',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          )
+                        : null,
+                  ),
+                  ListTile(
+                    title: const Text('Home'),
+                    leading: const Icon(Icons.home),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Profile'),
+                    leading: const Icon(Icons.person),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.blue),
-                          ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Settings'),
+                    leading: const Icon(Icons.settings),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingPage(),
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Logout'),
+                    leading: const Icon(Icons.logout),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            title: const Text(
+                              'Log out',
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            content: const Text('Are you sure?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  logOut();
+                                },
+                                child: const Text(
+                                  'Log out',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
+          : null,
       body: Column(
         children: [
           Container(

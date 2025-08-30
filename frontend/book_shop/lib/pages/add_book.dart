@@ -42,8 +42,8 @@ class _AddBookPageState extends State<AddBookPage> {
   Future<void> _pickDate(bool isPublish) async {
     final pickedDate = await showDatePicker(
       context: context,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      firstDate: DateTime(1500),
+      lastDate: DateTime.now(),
       initialDate: DateTime.now(),
     );
     if (pickedDate != null) {
@@ -62,7 +62,7 @@ class _AddBookPageState extends State<AddBookPage> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("http://127.0.0.1:8000/api/books/"), // change URL
+      Uri.parse("http://127.0.0.1:8000/book/"), // change URL
     );
 
     request.fields['name'] = _nameController.text;
@@ -89,10 +89,12 @@ class _AddBookPageState extends State<AddBookPage> {
 
     var response = await request.send();
     if (response.statusCode == 201) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Book added successfully ✅")),
       );
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed ❌ Code: ${response.statusCode}")),
       );
@@ -102,7 +104,11 @@ class _AddBookPageState extends State<AddBookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Book")),
+      appBar: AppBar(
+        title: const Text("Add Book", style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -110,16 +116,33 @@ class _AddBookPageState extends State<AddBookPage> {
           child: ListView(
             children: [
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: "Name"),
-                validator: (v) => v!.isEmpty ? "Enter name" : null,
+                validator: (v) => (v!.isEmpty) ? "Enter name" : null,
               ),
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 controller: _priceController,
                 decoration: const InputDecoration(labelText: "Price"),
                 keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null) return 'Enter valid price';
+                  if (double.tryParse(value) == null) {
+                    return 'Enter valid price';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value == null) return 'Enter valid price';
+                  if (double.tryParse(value) == null) {
+                    return 'Enter valid price';
+                  }
+                  return null;
+                },
                 controller: _discountController,
                 decoration: const InputDecoration(labelText: "Discount"),
                 keyboardType: TextInputType.number,

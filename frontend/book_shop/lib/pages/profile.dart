@@ -1,3 +1,4 @@
+import 'package:book_shop/Common/fetchUser.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/pages/change_password.dart';
 import 'package:flutter/material.dart';
@@ -10,25 +11,23 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Map<String, dynamic>? user;
-
-  Future<void> fetchUser() async {
-    final data = await getUser();
+  Future<void> getUserData() async {
     setState(() {
-      user = data;
+      fetchUser();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    fetchUser();
+    getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text('My Account', style: TextStyle(color: Colors.white)),
       ),
       body: Center(
