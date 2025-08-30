@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:book_shop/Common/Widgets/custom_button.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +23,9 @@ class _AddBookPageState extends State<AddBookPage> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _discountController = TextEditingController();
+  final _authorController = TextEditingController();
+  final _publisherController = TextEditingController();
+  final _subjectController = TextEditingController();
 
   Future<void> _pickPreview() async {
     try {
@@ -143,6 +147,43 @@ class _AddBookPageState extends State<AddBookPage> {
                 controller: _discountController,
               ),
               SizedBox(height: 20),
+              TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(labelText: 'Author'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter author\'s name';
+                  }
+                  return null;
+                },
+                controller: _authorController,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(labelText: 'Publisher'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter publisher\'s name';
+                  }
+                  return null;
+                },
+                controller: _publisherController,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(labelText: 'Subject'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter Subject';
+                  }
+                  return null;
+                },
+                controller: _subjectController,
+              ),
+              SizedBox(height: 20),
+
               ListTile(
                 title: Text(
                   "Publish Date: ${_publishDate == null ? 'Not selected' : DateFormat('yyyy-MM-dd').format(_publishDate!)}",
@@ -216,6 +257,17 @@ class _AddBookPageState extends State<AddBookPage> {
                     ),
                   if (_preview != null) Icon(Icons.check, color: Colors.green),
                 ],
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: AlignmentGeometry.center,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(150, 40),
+                  ),
+                  child: Text('Submit'),
+                ),
               ),
             ],
           ),
