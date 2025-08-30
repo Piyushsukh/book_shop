@@ -39,6 +39,8 @@ dependencies:
   intl: ^0.20.2
   flutter_secure_storage: ^9.2.4
   image_picker: ^1.2.0
+  file_picker: ^10.3.2
+  open_filex: ^4.7.0
 
 dev_dependencies:
   flutter_test:

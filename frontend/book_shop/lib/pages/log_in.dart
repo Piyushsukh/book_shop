@@ -125,7 +125,7 @@ class _LogInState extends State<LogIn> {
             SizedBox(height: 10),
             Row(
               children: [
-                Text('Don\'t Have an account?'),
+                Text('Don\'t have an account?'),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(

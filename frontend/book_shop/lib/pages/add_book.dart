@@ -1,8 +1,10 @@
 import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
+import 'package:open_filex/open_filex.dart';
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({super.key});
@@ -12,92 +14,77 @@ class AddBookPage extends StatefulWidget {
 }
 
 class _AddBookPageState extends State<AddBookPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _discountController = TextEditingController();
-
+  File? _image;
+  File? _preview;
   DateTime? _publishDate;
   DateTime? _lastSoldDate;
+  final _formkey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _discountController = TextEditingController();
 
-  File? _imageFile;
-  File? _previewFile;
-
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage(bool isPreview) async {
-    final picked = await _picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) {
-      setState(() {
-        if (isPreview) {
-          _previewFile = File(picked.path);
-        } else {
-          _imageFile = File(picked.path);
-        }
-      });
+  Future<void> _pickPreview() async {
+    try {
+      final pickedFile = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      if (pickedFile != null) {
+        setState(() {
+          _preview = File(pickedFile.files.single.path!);
+        });
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
-  Future<void> _pickDate(bool isPublish) async {
-    final pickedDate = await showDatePicker(
-      context: context,
-      firstDate: DateTime(1500),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        if (isPublish) {
+  void _openImage() async {
+    if (_image != null) {
+      await OpenFilex.open(_image!.path);
+    }
+  }
+
+  void _openPreview() async {
+    if (_preview != null) {
+      await OpenFilex.open(_preview!.path);
+    }
+  }
+
+  Future<void> _imagePick() async {
+    try {
+      final picked = ImagePicker();
+      final pickedImage = await picked.pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        setState(() {
+          _image = File(pickedImage.path);
+        });
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> _pickDate(bool a) async {
+    try {
+      final pickedDate = await showDatePicker(
+        context: context,
+        firstDate: DateTime(1600),
+        lastDate: DateTime.now(),
+        initialDate: DateTime.now(),
+      );
+      if (pickedDate == null) return;
+      if (a) {
+        setState(() {
           _publishDate = pickedDate;
-        } else {
+        });
+      } else {
+        setState(() {
           _lastSoldDate = pickedDate;
-        }
-      });
-    }
-  }
-
-  Future<void> _submitForm() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse("http://127.0.0.1:8000/book/"), // change URL
-    );
-
-    request.fields['name'] = _nameController.text;
-    request.fields['price'] = _priceController.text;
-    request.fields['discount'] = _discountController.text;
-    request.fields['publish_date'] = _publishDate?.toIso8601String() ?? '';
-    request.fields['last_sold'] = _lastSoldDate?.toIso8601String() ?? '';
-
-    if (_imageFile != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath('image', _imageFile!.path),
-      );
-    }
-    if (_previewFile != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath('preview', _previewFile!.path),
-      );
-    }
-
-    // Later you can add subject, author, publisher IDs (drop-downs)
-    request.fields['subject'] = "1"; // example
-    request.fields['author'] = "1";
-    request.fields['publisher'] = "1";
-
-    var response = await request.send();
-    if (response.statusCode == 201) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Book added successfully ✅")),
-      );
-    } else {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed ❌ Code: ${response.statusCode}")),
-      );
+        });
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
@@ -105,94 +92,130 @@ class _AddBookPageState extends State<AddBookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Book", style: TextStyle(color: Colors.white)),
         iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Add book', style: TextStyle(color: Colors.white)),
       ),
-
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         child: Form(
-          key: _formKey,
+          key: _formkey,
           child: ListView(
             children: [
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: "Name"),
-                validator: (v) => (v!.isEmpty) ? "Enter name" : null,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: _priceController,
-                decoration: const InputDecoration(labelText: "Price"),
-                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Name'),
                 validator: (value) {
-                  if (value == null) return 'Enter valid price';
-                  if (double.tryParse(value) == null) {
+                  if (value!.isEmpty) {
+                    return 'Enter name';
+                  }
+                  return null;
+                },
+                controller: _nameController,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(labelText: 'Price'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter price';
+                  } else if (double.tryParse(value) == null) {
                     return 'Enter valid price';
                   }
                   return null;
                 },
+                controller: _priceController,
               ),
+              SizedBox(height: 20),
               TextFormField(
+                keyboardType: TextInputType.number,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(labelText: 'Discount'),
                 validator: (value) {
-                  if (value == null) return 'Enter valid price';
-                  if (double.tryParse(value) == null) {
+                  if (value!.isEmpty) {
+                    return 'Enter price';
+                  } else if (double.tryParse(value) == null) {
                     return 'Enter valid price';
                   }
                   return null;
                 },
                 controller: _discountController,
-                decoration: const InputDecoration(labelText: "Discount"),
-                keyboardType: TextInputType.number,
               ),
+              SizedBox(height: 20),
               ListTile(
                 title: Text(
-                  "Publish Date: ${_publishDate != null ? DateFormat('yyyy-MM-dd').format(_publishDate!) : 'Not selected'}",
+                  "Publish Date: ${_publishDate == null ? 'Not selected' : DateFormat('yyyy-MM-dd').format(_publishDate!)}",
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () => _pickDate(true),
+                  onPressed: () async {
+                    await _pickDate(true);
+                  },
+                  icon: Icon(Icons.calendar_today),
                 ),
               ),
+              SizedBox(height: 20),
               ListTile(
                 title: Text(
-                  "Last Sold: ${_lastSoldDate != null ? DateFormat('yyyy-MM-dd').format(_lastSoldDate!) : 'Not selected'}",
+                  "Last Sold date: ${_lastSoldDate == null ? 'Not selected' : DateFormat('yyyy-MM-dd').format(_lastSoldDate!)}",
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () => _pickDate(false),
+                  onPressed: () {
+                    _pickDate(false);
+                  },
+                  icon: Icon(Icons.calendar_today),
                 ),
               ),
+              SizedBox(height: 20),
               Row(
                 children: [
                   ElevatedButton(
-                    onPressed: () => _pickImage(false),
-                    child: const Text("Pick Image"),
+                    onPressed: () {
+                      _imagePick();
+                    },
+                    child: Text('Pick image'),
                   ),
-                  const SizedBox(width: 10),
-                  _imageFile != null
-                      ? const Icon(Icons.check, color: Colors.green)
-                      : const SizedBox(),
+                  SizedBox(width: 5),
+                  if (_image != null)
+                    TextButton(
+                      onPressed: _openImage,
+                      style: ElevatedButton.styleFrom(
+                        overlayColor: Colors.transparent,
+                        splashFactory: NoSplash.splashFactory,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Text(
+                        "Open",
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+
+                  if (_image != null) Icon(Icons.check, color: Colors.green),
                 ],
               ),
+              SizedBox(height: 20),
               Row(
                 children: [
                   ElevatedButton(
-                    onPressed: () => _pickImage(true),
-                    child: const Text("Pick Preview File"),
+                    onPressed: _pickPreview,
+                    child: Text('Preview file'),
                   ),
-                  const SizedBox(width: 10),
-                  _previewFile != null
-                      ? const Icon(Icons.check, color: Colors.green)
-                      : const SizedBox(),
+                  SizedBox(width: 5),
+                  if (_preview != null)
+                    TextButton(
+                      onPressed: _openPreview,
+                      style: ElevatedButton.styleFrom(
+                        overlayColor: Colors.transparent,
+                        splashFactory: NoSplash.splashFactory,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Text(
+                        "Open",
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  if (_preview != null) Icon(Icons.check, color: Colors.green),
                 ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text("Add Book"),
               ),
             ],
           ),
