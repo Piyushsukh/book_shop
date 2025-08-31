@@ -45,10 +45,27 @@ class BookSerializer(serializers.ModelSerializer):
         validated_data["publisher"] = publisher
         validated_data["subject"] = subject
         return Book.objects.create(**validated_data)
+    
+    def save(self, **kwargs):
+        return super().save(**kwargs)
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model='Author'
-        fields=Author.objects.all()
+class MyBookSeralizer(serializers.ModelSerializer):
+    author = serializers.CharField()
+    publisher = serializers.CharField()
+    subject = serializers.CharField()
+    image = serializers.ImageField(use_url=True, required=False)
+    class  Meta:
+        model=Book
+        fields=fields = (
+            'name',
+            'price',
+            'discount',
+            'author',
+            'publisher',
+            'image',
+            'preview',
+            'last_sold',
+            'publish_date',
+            'subject',
+        )
