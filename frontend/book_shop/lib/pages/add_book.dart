@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:book_shop/Secrets/secret.dart';
+import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:http/http.dart' as http;
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({super.key});
@@ -24,6 +27,59 @@ class _AddBookPageState extends State<AddBookPage> {
   final _authorController = TextEditingController();
   final _publisherController = TextEditingController();
   final _subjectController = TextEditingController();
+
+  Future<void> createBook() async {
+    try {
+      final token = await storage.read(key: 'token');
+      final request = http.MultipartRequest('POST', Uri.parse('$url/book/'));
+
+      request.headers['Authorization'] = 'Token $token';
+      request.fields['name'] = _nameController.text;
+      request.fields['price'] = _priceController.text;
+      request.fields['discount'] = _discountController.text;
+      request.fields['author'] = _authorController.text;
+      request.fields['publisher'] = _publisherController.text;
+      request.fields['subject'] = _subjectController.text;
+      request.fields['publish_date'] = DateFormat(
+        'yyyy-MM-dd',
+      ).format(_publishDate!);
+      request.fields['last_sold'] = DateFormat(
+        'yyyy-MM-dd',
+      ).format(_lastSoldDate!);
+      if (_image != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image', _image!.path),
+        );
+      }
+      if (_preview != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('preview', _preview!.path),
+        );
+
+        final response = await request.send();
+
+        if (response.statusCode == 201) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Book is created')));
+        }
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> _submitForm() async {
+    if (_formkey.currentState!.validate()) {
+      createBook();
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Form is invalid')));
+    }
+  }
 
   Future<void> _pickPreview() async {
     try {
@@ -260,7 +316,7 @@ class _AddBookPageState extends State<AddBookPage> {
               Align(
                 alignment: AlignmentGeometry.center,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _submitForm,
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(150, 40),
                   ),

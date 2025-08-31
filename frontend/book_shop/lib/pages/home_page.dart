@@ -22,9 +22,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Future<void> getUserData() async {
-    setState(() {
-      fetchUser();
-    });
+    await fetchUser();
+    setState(() {});
   }
 
   Future<void> logOut() async {

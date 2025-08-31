@@ -1,5 +1,6 @@
 import 'package:book_shop/Common/fetchUser.dart';
 import 'package:book_shop/pages/change_password.dart';
+import 'package:book_shop/pages/my_books.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -57,9 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
               title: Text('My books'),
               leading: Icon(Icons.book_sharp, color: Colors.deepPurple),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ChangePassword()),
-                );
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (context) => MyBooks()));
               },
             ),
             ListTile(
