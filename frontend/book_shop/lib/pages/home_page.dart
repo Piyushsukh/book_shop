@@ -316,7 +316,7 @@ class _HomeState extends State<Home> {
           FutureBuilder(
             future: fetchBook(),
             builder: (context, snapshot) {
-              return BookList(book: snapshot.data);
+              return BookList(book: snapshot.data, buttonWorking: true);
             },
           ),
         ],

@@ -46,7 +46,7 @@ class _MyBooksState extends State<MyBooks> {
           FutureBuilder(
             future: fetchMyBook(),
             builder: (context, snapshot) {
-              return BookList(book: snapshot.data);
+              return BookList(book: snapshot.data, buttonWorking: false);
             },
           ),
         ],
