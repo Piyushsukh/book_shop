@@ -25,7 +25,8 @@ class BookList extends StatelessWidget {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AboutBook(book: book),
+                                  builder: (context) =>
+                                      AboutBook(book: book![i]),
                                 ),
                               );
                             },

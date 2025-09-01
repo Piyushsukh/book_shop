@@ -227,10 +227,10 @@ class _AddBookPageState extends State<AddBookPage> {
               SizedBox(height: 20),
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Subject'),
+                decoration: InputDecoration(labelText: 'Type of book'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Enter Subject';
+                    return 'Enter Type';
                   }
                   return null;
                 },
