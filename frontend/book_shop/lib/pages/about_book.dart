@@ -1,10 +1,14 @@
 import 'package:book_shop/details/bookdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
 
 class AboutBook extends StatelessWidget {
   final Book book;
   const AboutBook({super.key, required this.book});
+  Future<void> openPreview() async {
+    await OpenFilex.open(book.preview);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class AboutBook extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.green,
+                                color: const Color.fromARGB(255, 18, 126, 21),
                               ),
                             ),
                             SizedBox(width: 13),
@@ -96,16 +100,21 @@ class AboutBook extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.w400,
-                                color: Colors.grey,
+                                color: const Color.fromARGB(255, 99, 99, 99),
                                 decoration: TextDecoration.lineThrough,
-                                decorationColor: Colors.grey,
+                                decorationColor: const Color.fromARGB(
+                                  255,
+                                  99,
+                                  99,
+                                  99,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         SizedBox(height: 10),
                         ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: openPreview,
                           icon: Icon(
                             Icons.remove_red_eye,
                             color: Colors.white,
@@ -122,6 +131,52 @@ class AboutBook extends StatelessWidget {
                             'Preview Book',
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              onPressed: () {},
+                              style: TextButton.styleFrom(
+                                overlayColor: Colors.transparent,
+                                backgroundColor: Colors.grey,
+                                fixedSize: Size(size.width / 2.5, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusGeometry.circular(
+                                    20,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'Add to cart',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                overlayColor: Colors.transparent,
+                                backgroundColor: Colors.black,
+                                fixedSize: Size(size.width / 2.5, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusGeometry.circular(
+                                    20,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'Buy',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
