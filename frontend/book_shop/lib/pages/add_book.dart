@@ -178,7 +178,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Enter price';
-                  } else if (double.tryParse(value) == null) {
+                  } else if (int.tryParse(value) == null) {
                     return 'Enter valid price';
                   }
                   return null;
@@ -192,9 +192,9 @@ class _AddBookPageState extends State<AddBookPage> {
                 decoration: InputDecoration(labelText: 'Discount'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Enter price';
-                  } else if (double.tryParse(value) == null) {
-                    return 'Enter valid price';
+                    return 'Enter discount';
+                  } else if (int.tryParse(value) == null) {
+                    return 'Enter valid discount';
                   }
                   return null;
                 },

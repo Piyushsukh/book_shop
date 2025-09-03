@@ -6,6 +6,7 @@ import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
 import 'package:book_shop/pages/add_book.dart';
+import 'package:book_shop/pages/cart.dart';
 import 'package:book_shop/pages/log_in.dart';
 import 'package:book_shop/pages/profile.dart';
 import 'package:book_shop/pages/settings.dart';
@@ -122,7 +123,11 @@ class _HomeState extends State<Home> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(
+                      context,
+                    ).push(MaterialPageRoute(builder: (context) => Cart()));
+                  },
                   icon: const Icon(
                     Icons.shopping_cart,
                     color: Colors.white,

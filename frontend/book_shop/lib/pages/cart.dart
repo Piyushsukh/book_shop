@@ -68,10 +68,9 @@ class Cart extends StatelessWidget {
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
               ),
-              color: const Color.fromARGB(255, 155, 158, 158),
+              color: const Color.fromARGB(255, 208, 207, 207),
             ),
             padding: EdgeInsets.all(8),
-            // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(

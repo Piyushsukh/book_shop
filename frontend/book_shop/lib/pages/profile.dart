@@ -21,7 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> logOut() async {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
     if (await loggingOut()) {
       setState(() {
         isAuth = false;
@@ -96,7 +95,48 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               title: Text('Log out'),
               leading: Icon(Icons.logout, color: Colors.red),
-              onTap: logOut,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      title: const Text(
+                        'Log out',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      content: const Text('Are you sure?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => Home()),
+                              (route) => false, // remove all previous routes
+                            );
+                            logOut();
+                          },
+                          child: const Text(
+                            'Log out',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
