@@ -1,4 +1,5 @@
 import 'package:book_shop/details/bookdetails.dart';
+import 'package:book_shop/pages/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
@@ -14,7 +15,11 @@ class AboutBook extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
       body: ColoredBox(
         color: Colors.white,
         child: SafeArea(
@@ -137,7 +142,13 @@ class AboutBook extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Cart(),
+                                  ),
+                                );
+                              },
                               style: TextButton.styleFrom(
                                 overlayColor: Colors.transparent,
                                 backgroundColor: Colors.grey,

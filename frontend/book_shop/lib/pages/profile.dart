@@ -1,5 +1,8 @@
 import 'package:book_shop/Common/fetchUser.dart';
+import 'package:book_shop/Secrets/secret.dart';
+import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/pages/change_password.dart';
+import 'package:book_shop/pages/home_page.dart';
 import 'package:book_shop/pages/my_books.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +18,24 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       fetchUser();
     });
+  }
+
+  Future<void> logOut() async {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
+    if (await loggingOut()) {
+      setState(() {
+        isAuth = false;
+        if (!mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Log out Successfully')));
+      });
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Log out Failed')));
+    }
   }
 
   @override
@@ -75,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               title: Text('Log out'),
               leading: Icon(Icons.logout, color: Colors.red),
-              onTap: () {},
+              onTap: logOut,
             ),
           ],
         ),
