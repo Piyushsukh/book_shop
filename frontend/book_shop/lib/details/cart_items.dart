@@ -41,7 +41,8 @@ class CartNotifier extends StateNotifier<List<CartItems>> {
   }
 
   int subTotal() {
-    return state.fold(0, (sum, item) => sum + (item.quantity * item.price));
+    return state.fold(0, (sum, item) => sum + (item.quantity * item.price)) +
+        state.fold(0, (sum, item) => sum + (item.quantity * item.discount));
   }
 
   int totalDiscount() {
@@ -49,7 +50,6 @@ class CartNotifier extends StateNotifier<List<CartItems>> {
   }
 
   int total() {
-    return state.fold(0, (sum, item) => sum + (item.quantity * item.price)) -
-        state.fold(0, (sum, item) => sum + (item.quantity * item.discount));
+    return state.fold(0, (sum, item) => sum + (item.quantity * item.price));
   }
 }

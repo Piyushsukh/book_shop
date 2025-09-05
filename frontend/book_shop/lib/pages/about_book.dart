@@ -1,7 +1,7 @@
 import 'package:book_shop/details/bookdetails.dart';
 import 'package:book_shop/details/cart_items.dart';
 import 'package:book_shop/main.dart';
-import 'package:book_shop/pages/cart.dart';
+import 'package:book_shop/pages/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -187,7 +187,15 @@ class AboutBook extends StatelessWidget {
                               },
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => CheckOutPage(
+                                      totalPrice: book.price.toString(),
+                                    ),
+                                  ),
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 overlayColor: Colors.transparent,
                                 backgroundColor: Colors.black,
