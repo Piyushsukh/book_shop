@@ -1,10 +1,18 @@
+import 'package:book_shop/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Cart extends StatelessWidget {
+class Cart extends ConsumerStatefulWidget {
   const Cart({super.key});
 
   @override
+  ConsumerState<Cart> createState() => _CartState();
+}
+
+class _CartState extends ConsumerState<Cart> {
+  @override
   Widget build(BuildContext context) {
+    final list = ref.watch(cartProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Cart', style: TextStyle(color: Colors.white)),
@@ -14,7 +22,7 @@ class Cart extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: list.length,
               itemBuilder: (context, i) {
                 return Card(
                   margin: const EdgeInsets.symmetric(
@@ -23,20 +31,20 @@ class Cart extends StatelessWidget {
                   ),
                   child: ListTile(
                     leading: Image.network(
-                      'http://127.0.0.1:8000/media/books/Screenshot_2025-08-14_160524.png',
+                      list[i].imageUrl,
                       width: 50,
                       height: 70,
                       fit: BoxFit.cover,
                     ),
                     title: Text(
-                      'The Kite Runner And A Thousand Splendid Sun Combo (English, Paper Back)  (Paperback, Khaled Hossein)',
+                      list[i].name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                     ),
                     subtitle: Text(
-                      'Khaled Hosseini',
+                      list[i].author,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -47,12 +55,25 @@ class Cart extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              ref
+                                  .read(cartProvider.notifier)
+                                  .removeItem(list[i]);
+                            });
+                          },
                           icon: Icon(Icons.remove_outlined),
                         ),
-                        Text('1', style: TextStyle(fontSize: 20)),
+                        Text(
+                          list[i].quantity.toString(),
+                          style: TextStyle(fontSize: 20),
+                        ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              ref.read(cartProvider.notifier).addItem(list[i]);
+                            });
+                          },
                           icon: Icon(Icons.add_outlined),
                         ),
                       ],
@@ -79,7 +100,10 @@ class Cart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Subtotal', style: TextStyle(fontSize: 20)),
-                      Text('₹400', style: TextStyle(fontSize: 20)),
+                      Text(
+                        '₹${ref.read(cartProvider.notifier).subTotal()}',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ],
                   ),
                   SizedBox(height: 5),
@@ -87,7 +111,10 @@ class Cart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Discount', style: TextStyle(fontSize: 20)),
-                      Text('₹50', style: TextStyle(fontSize: 20)),
+                      Text(
+                        '₹${ref.read(cartProvider.notifier).totalDiscount()}',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ],
                   ),
                   Divider(),
@@ -101,7 +128,10 @@ class Cart extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text('₹350', style: TextStyle(fontSize: 20)),
+                      Text(
+                        '₹${ref.read(cartProvider.notifier).total()}',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10),

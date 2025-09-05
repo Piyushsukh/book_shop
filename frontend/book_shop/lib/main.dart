@@ -1,7 +1,11 @@
+import 'package:book_shop/details/cart_items.dart';
 import 'package:book_shop/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final cartProvider = StateNotifierProvider<CartNotifier, List<CartItems>>(
+  (ref) => CartNotifier([]),
+);
 void main() {
   runApp(ProviderScope(child: const MyApp()));
 }

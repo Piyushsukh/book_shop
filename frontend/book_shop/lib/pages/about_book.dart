@@ -1,6 +1,9 @@
 import 'package:book_shop/details/bookdetails.dart';
+import 'package:book_shop/details/cart_items.dart';
+import 'package:book_shop/main.dart';
 import 'package:book_shop/pages/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 
@@ -141,31 +144,47 @@ class AboutBook extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => Cart(),
+                            Consumer(
+                              builder: (context, ref, child) {
+                                return TextButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(cartProvider.notifier)
+                                        .addItem(
+                                          CartItems(
+                                            name: book.bookName,
+                                            imageUrl: book.imageUrl,
+                                            author: book.authorName,
+                                            price: book.price,
+                                            discount: book.discount,
+                                          ),
+                                        );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Item added successfully',
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  style: TextButton.styleFrom(
+                                    overlayColor: Colors.transparent,
+                                    backgroundColor: Colors.grey,
+                                    fixedSize: Size(size.width / 2.5, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadiusGeometry.circular(20),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Add to cart',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 );
                               },
-                              style: TextButton.styleFrom(
-                                overlayColor: Colors.transparent,
-                                backgroundColor: Colors.grey,
-                                fixedSize: Size(size.width / 2.5, 50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadiusGeometry.circular(
-                                    20,
-                                  ),
-                                ),
-                              ),
-                              child: Text(
-                                'Add to cart',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                ),
-                              ),
                             ),
                             TextButton(
                               onPressed: () {},
