@@ -1,4 +1,5 @@
 import 'package:book_shop/main.dart';
+import 'package:book_shop/pages/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -139,7 +140,18 @@ class _CartState extends ConsumerState<Cart> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 50),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CheckOutPage(
+                            totalPrice: ref
+                                .read(cartProvider.notifier)
+                                .total()
+                                .toString(),
+                          ),
+                        ),
+                      );
+                    },
                     child: Text('Checkout'),
                   ),
                 ],

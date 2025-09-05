@@ -1,3 +1,4 @@
+import 'package:book_shop/Common/Widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class CheckOutPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class CheckOutPage extends StatefulWidget {
 
 class _CheckOutPageState extends State<CheckOutPage> {
   final _formkey = GlobalKey<FormState>();
+  String selectedValue = 'Razorpay';
 
   @override
   void initState() {
@@ -18,7 +20,6 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
   @override
   Widget build(BuildContext context) {
-    String selectedValue = 'Rozarpay';
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -127,21 +128,33 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
               RadioListTile.adaptive(
-                value: 'Rozarpay',
-                selected: selectedValue == 'Rozarpay',
-                onFocusChange: (value) {
-                  selectedValue = 'Rozarpay';
+                value: 'Razorpay',
+                groupValue: selectedValue,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue = 'Razorpay';
+                  });
                 },
-                title: Text('Rozarpay'),
+                title: Text(
+                  'Razorpay',
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
               ),
               RadioListTile.adaptive(
                 value: 'Cod',
-                selected: selectedValue == 'Cod',
-                onFocusChange: (value) {
-                  selectedValue = 'Cod';
+                groupValue: selectedValue,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue = 'Cod';
+                  });
                 },
-                title: Text('Cash on delivery'),
+                title: Text(
+                  'Cash on delivery',
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
               ),
+              SizedBox(height: 15),
+              CustomButton(text: 'Place order', onPressed: () {}),
             ],
           ),
         ),
