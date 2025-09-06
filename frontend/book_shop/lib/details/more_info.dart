@@ -17,3 +17,13 @@ class Author {
     return Author(id: map['id'] as int, name: map['name'] as String);
   }
 }
+
+class Publisher {
+  final int id;
+  final String name;
+  const Publisher({required this.id, required this.name});
+
+  factory Publisher.fromJSON(Map<String, dynamic> map) {
+    return Publisher(id: map['id'] as int, name: map['name'] as String);
+  }
+}

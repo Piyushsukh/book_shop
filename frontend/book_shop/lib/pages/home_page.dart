@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
 
   String? subjectName;
   String? authorName;
+  String? publisherName;
   Future<List<Subject>> fetchSubject() async {
     try {
       final response = await http.get(Uri.parse('$url/subjects/'));
@@ -43,6 +44,17 @@ class _HomeState extends State<Home> {
       final response = await http.get(Uri.parse('$url/author/'));
       List jsonData = jsonDecode(response.body);
       final map = jsonData.map((book) => Author.fromJSON(book)).toList();
+      return map;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<List<Publisher>> fetchPublisher() async {
+    try {
+      final response = await http.get(Uri.parse('$url/publisher/'));
+      List jsonData = jsonDecode(response.body);
+      final map = jsonData.map((book) => Publisher.fromJSON(book)).toList();
       return map;
     } catch (e) {
       throw e.toString();
@@ -87,6 +99,12 @@ class _HomeState extends State<Home> {
           Uri.parse(
             '$url/author/by-author/',
           ).replace(queryParameters: {'author': authorName}),
+        );
+      } else if (publisherName != null) {
+        response = await http.get(
+          Uri.parse(
+            '$url/publisher/by-publisher/',
+          ).replace(queryParameters: {'publisher': publisherName}),
         );
       } else {
         response = await http.get(Uri.parse('$url/book/'));
@@ -312,6 +330,7 @@ class _HomeState extends State<Home> {
                     selecteChip = 'All';
                     subjectName = null;
                     authorName = null;
+                    publisherName = null;
                   });
                 },
                 child: Chip(
@@ -337,6 +356,7 @@ class _HomeState extends State<Home> {
                   setState(() {
                     selecteChip = 'Types';
                     authorName = null;
+                    publisherName = null;
                   });
                   showDialog(
                     barrierDismissible: false,
@@ -399,12 +419,13 @@ class _HomeState extends State<Home> {
                   setState(() {
                     selecteChip = 'Author';
                     subjectName = null;
+                    publisherName = null;
                   });
                   showDialog(
                     barrierDismissible: false,
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('Types'),
+                      title: Text('Author'),
                       content: SizedBox(
                         width: double.maxFinite,
                         height: 300,
@@ -460,7 +481,47 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   setState(() {
                     selecteChip = 'Publisher';
+                    authorName = null;
+                    subjectName = null;
                   });
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Publishers'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        height: 300,
+                        child: FutureBuilder(
+                          future: fetchPublisher(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Error: ${snapshot.error}"),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      publisherName = snapshot.data![i].name;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Text(snapshot.data![i].name),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: Chip(
                   label: Text(

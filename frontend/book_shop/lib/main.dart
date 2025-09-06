@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final cartProvider = StateNotifierProvider<CartNotifier, List<CartItems>>(
   (ref) => CartNotifier([]),
 );
+
 void main() {
   runApp(ProviderScope(child: const MyApp()));
 }
