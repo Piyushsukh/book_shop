@@ -1,4 +1,5 @@
 import 'package:book_shop/Common/Widgets/custom_button.dart';
+import 'package:book_shop/pages/order_placed.dart';
 import 'package:flutter/material.dart';
 
 class CheckOutPage extends StatefulWidget {
@@ -11,7 +12,7 @@ class CheckOutPage extends StatefulWidget {
 
 class _CheckOutPageState extends State<CheckOutPage> {
   final _formkey = GlobalKey<FormState>();
-  String selectedValue = 'Razorpay';
+  String selectedValue = '';
 
   @override
   void initState() {
@@ -39,6 +40,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(),
                   hintText: 'Name',
                 ),
                 validator: (val) {
@@ -53,11 +56,13 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(),
                   hintText: 'Phone',
                 ),
                 validator: (val) {
                   if (val!.isEmpty || val.length != 10) {
-                    return 'Please enter phone no.';
+                    return 'Please enter phone no.(9876543210)';
                   }
                   return null;
                 },
@@ -67,6 +72,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 maxLines: 3,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(),
                   hintText: 'Address\n1234 Main st',
                 ),
                 validator: (val) {
@@ -80,6 +87,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(),
                   hintText: 'City',
                 ),
                 validator: (val) {
@@ -94,11 +103,13 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(),
                   hintText: 'Pincode',
                 ),
                 validator: (val) {
                   if (val!.isEmpty || val.length != 6) {
-                    return 'Please enter pincode of 6 digit';
+                    return 'Please enter pincode of 6 digit(123456)';
                   }
                   return null;
                 },
@@ -127,19 +138,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 'Payment',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-              RadioListTile.adaptive(
-                value: 'Razorpay',
-                groupValue: selectedValue,
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = 'Razorpay';
-                  });
-                },
-                title: Text(
-                  'Razorpay',
-                  style: TextStyle(fontWeight: FontWeight.w400),
-                ),
-              ),
+
               RadioListTile.adaptive(
                 value: 'Cod',
                 groupValue: selectedValue,
@@ -154,7 +153,14 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 ),
               ),
               SizedBox(height: 15),
-              CustomButton(text: 'Place order', onPressed: () {}),
+              CustomButton(
+                text: 'Place order',
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => OrderPlaced()),
+                  );
+                },
+              ),
             ],
           ),
         ),
