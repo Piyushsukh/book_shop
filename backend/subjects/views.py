@@ -1,7 +1,6 @@
 from rest_framework.permissions import AllowAny
 from rest_framework import generics
 from .serializers import SubjectSerializer
-from rest_framework.response import Response
 from book.models import Subject,Book
 from book.serializers import BookSerializer
 
