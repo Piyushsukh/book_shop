@@ -57,7 +57,7 @@ class MyBookSeralizer(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True, required=False)
     class  Meta:
         model=Book
-        fields=fields = (
+        fields= (
             'name',
             'price',
             'discount',
@@ -69,3 +69,9 @@ class MyBookSeralizer(serializers.ModelSerializer):
             'publish_date',
             'subject',
         )
+
+
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Subject
+        fields='__all__'
