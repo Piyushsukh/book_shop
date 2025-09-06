@@ -6,6 +6,14 @@ class Subject {
   factory Subject.fromJSON(Map<String, dynamic> map) {
     return Subject(id: map['id'] as int, name: map['name'] as String);
   }
+}
 
-  static fromJson(book) {}
+class Author {
+  final int id;
+  final String name;
+  const Author({required this.id, required this.name});
+
+  factory Author.fromJSON(Map<String, dynamic> map) {
+    return Author(id: map['id'] as int, name: map['name'] as String);
+  }
 }

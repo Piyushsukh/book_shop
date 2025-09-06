@@ -26,11 +26,23 @@ class _HomeState extends State<Home> {
   late String selecteChip;
 
   String? subjectName;
+  String? authorName;
   Future<List<Subject>> fetchSubject() async {
     try {
       final response = await http.get(Uri.parse('$url/subjects/'));
       List jsonData = jsonDecode(response.body);
       final map = jsonData.map((book) => Subject.fromJSON(book)).toList();
+      return map;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<List<Author>> fetchAuthor() async {
+    try {
+      final response = await http.get(Uri.parse('$url/author/'));
+      List jsonData = jsonDecode(response.body);
+      final map = jsonData.map((book) => Author.fromJSON(book)).toList();
       return map;
     } catch (e) {
       throw e.toString();
@@ -63,15 +75,23 @@ class _HomeState extends State<Home> {
   Future<List<Book>> fetchBook() async {
     try {
       final http.Response response;
-      if (subjectName == null) {
-        response = await http.get(Uri.parse('$url/book/'));
-      } else {
+
+      if (subjectName != null) {
         response = await http.get(
           Uri.parse(
             '$url/subjects/by-subject/',
           ).replace(queryParameters: {'subject': subjectName}),
         );
+      } else if (authorName != null) {
+        response = await http.get(
+          Uri.parse(
+            '$url/author/by-author/',
+          ).replace(queryParameters: {'author': authorName}),
+        );
+      } else {
+        response = await http.get(Uri.parse('$url/book/'));
       }
+
       List jsonData = jsonDecode(response.body);
       final map = jsonData.map((book) => Book.fromJSON(book)).toList();
       return map;
@@ -291,6 +311,7 @@ class _HomeState extends State<Home> {
                   setState(() {
                     selecteChip = 'All';
                     subjectName = null;
+                    authorName = null;
                   });
                 },
                 child: Chip(
@@ -315,6 +336,7 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   setState(() {
                     selecteChip = 'Types';
+                    authorName = null;
                   });
                   showDialog(
                     barrierDismissible: false,
@@ -376,7 +398,46 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   setState(() {
                     selecteChip = 'Author';
+                    subjectName = null;
                   });
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Types'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        height: 300,
+                        child: FutureBuilder(
+                          future: fetchAuthor(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Error: ${snapshot.error}"),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      authorName = snapshot.data![i].name;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Text(snapshot.data![i].name),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: Chip(
                   label: Text(
