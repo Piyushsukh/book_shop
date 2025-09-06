@@ -19,6 +19,21 @@ class _CheckOutPageState extends State<CheckOutPage> {
     super.initState();
   }
 
+  void _submitButton() {
+    if (selectedValue == 'Cod') {
+      if (_formkey.currentState!.validate()) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => OrderPlaced()),
+          (r) => false,
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Please select payment method')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,14 +168,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 ),
               ),
               SizedBox(height: 15),
-              CustomButton(
-                text: 'Place order',
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => OrderPlaced()),
-                  );
-                },
-              ),
+              CustomButton(text: 'Place order', onPressed: _submitButton),
             ],
           ),
         ),

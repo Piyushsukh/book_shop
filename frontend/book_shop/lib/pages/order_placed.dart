@@ -1,7 +1,5 @@
 import 'package:book_shop/pages/home_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class OrderPlaced extends StatelessWidget {
   const OrderPlaced({super.key});

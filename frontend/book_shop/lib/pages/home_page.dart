@@ -5,6 +5,7 @@ import 'package:book_shop/Common/fetchUser.dart';
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
+import 'package:book_shop/details/more_info.dart';
 import 'package:book_shop/pages/add_book.dart';
 import 'package:book_shop/pages/cart.dart';
 import 'package:book_shop/pages/log_in.dart';
@@ -22,6 +23,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late String selecteChip;
+
+  String? subjectName;
+  Future<List<Subject>> fetchSubject() async {
+    try {
+      final response = await http.get(Uri.parse('$url/subjects/'));
+      List jsonData = jsonDecode(response.body);
+      final map = jsonData.map((book) => Subject.fromJSON(book)).toList();
+      return map;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   Future<void> getUserData() async {
     await fetchUser();
     setState(() {});
@@ -47,7 +62,16 @@ class _HomeState extends State<Home> {
 
   Future<List<Book>> fetchBook() async {
     try {
-      final response = await http.get(Uri.parse('$url/book/'));
+      final http.Response response;
+      if (subjectName == null) {
+        response = await http.get(Uri.parse('$url/book/'));
+      } else {
+        response = await http.get(
+          Uri.parse(
+            '$url/subjects/by-subject/',
+          ).replace(queryParameters: {'subject': subjectName}),
+        );
+      }
       List jsonData = jsonDecode(response.body);
       final map = jsonData.map((book) => Book.fromJSON(book)).toList();
       return map;
@@ -67,20 +91,13 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    selecteChip = 'All';
     check();
     getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    const list = [
-      'All',
-      'Education',
-      'Novel',
-      'Story Telling',
-      'Fictional',
-      'Non Fictional',
-    ];
     return Scaffold(
       floatingActionButton: isAuth
           ? Padding(
@@ -247,23 +264,6 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              border: Border.all(),
-            ),
-            height: 60,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: list.length,
-              itemBuilder: (context, i) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Chip(label: Text(list[i])),
-                );
-              },
-            ),
-          ),
-          Container(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(
@@ -285,35 +285,137 @@ class _HomeState extends State<Home> {
           const SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Chip(
-                label: Text(
-                  'Subjects',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'All';
+                    subjectName = null;
+                  });
+                },
+                child: Chip(
+                  label: Text(
+                    'All',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  backgroundColor: selecteChip == 'All'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
                 ),
               ),
-              Chip(
-                label: Text(
-                  'Author',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'Types';
+                  });
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Types'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        height: 300,
+                        child: FutureBuilder(
+                          future: fetchSubject(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Error: ${snapshot.error}"),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      subjectName = snapshot.data![i].name;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Text(snapshot.data![i].name),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Chip(
+                  label: Text(
+                    'Types',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: selecteChip == 'Types'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
                 ),
               ),
-              Chip(
-                label: Text(
-                  'Publisher',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'Author';
+                  });
+                },
+                child: Chip(
+                  label: Text(
+                    'Author',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: selecteChip == 'Author'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'Publisher';
+                  });
+                },
+                child: Chip(
+                  label: Text(
+                    'Publisher',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: selecteChip == 'Publisher'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
                 ),
               ),
             ],
