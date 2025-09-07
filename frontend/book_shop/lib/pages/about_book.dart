@@ -2,16 +2,20 @@ import 'package:book_shop/details/bookdetails.dart';
 import 'package:book_shop/details/cart_items.dart';
 import 'package:book_shop/main.dart';
 import 'package:book_shop/pages/checkout.dart';
+import 'package:book_shop/pages/pdf_viewer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:open_filex/open_filex.dart';
 
 class AboutBook extends StatelessWidget {
   final Book book;
   const AboutBook({super.key, required this.book});
-  Future<void> openPreview() async {
-    await OpenFilex.open(book.preview);
+  void openPreview(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PDFViewPage(pdfUrl: book.preview),
+      ),
+    );
   }
 
   @override
@@ -122,7 +126,9 @@ class AboutBook extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         ElevatedButton.icon(
-                          onPressed: openPreview,
+                          onPressed: () {
+                            openPreview(context);
+                          },
                           icon: Icon(
                             Icons.remove_red_eye,
                             color: Colors.white,

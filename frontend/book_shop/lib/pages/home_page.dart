@@ -24,6 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late String selecteChip;
+  final _searchFields = TextEditingController();
 
   String? subjectName;
   String? authorName;
@@ -107,7 +108,11 @@ class _HomeState extends State<Home> {
           ).replace(queryParameters: {'publisher': publisherName}),
         );
       } else {
-        response = await http.get(Uri.parse('$url/book/'));
+        response = await http.get(
+          Uri.parse(
+            '$url/book/',
+          ).replace(queryParameters: {'search': _searchFields.text}),
+        );
       }
 
       List jsonData = jsonDecode(response.body);
@@ -303,12 +308,19 @@ class _HomeState extends State<Home> {
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
+
             child: TextField(
+              controller: _searchFields,
+              onChanged: (value) {
+                setState(() {});
+              },
               decoration: InputDecoration(
                 hintText: 'Search',
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {});
+                  },
                   child: const Text('Search'),
                 ),
                 enabledBorder: OutlineInputBorder(
@@ -545,7 +557,11 @@ class _HomeState extends State<Home> {
           FutureBuilder(
             future: fetchBook(),
             builder: (context, snapshot) {
-              return BookList(book: snapshot.data, buttonWorking: true);
+              bool b = true;
+              if (!isAuth) {
+                b = false;
+              }
+              return BookList(book: snapshot.data, buttonWorking: b);
             },
           ),
         ],
