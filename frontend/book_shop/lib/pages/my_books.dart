@@ -4,6 +4,7 @@ import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:book_shop/details/bookdetails.dart';
 import 'package:book_shop/widgets/books.dart';
+import 'package:book_shop/widgets/my_books.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +16,7 @@ class MyBooks extends StatefulWidget {
 }
 
 class _MyBooksState extends State<MyBooks> {
-  Future<List<Book>> fetchMyBook() async {
+  Future<List<MyBook>> fetchMyBook() async {
     try {
       final token = await storage.read(key: 'token');
       final response = await http.get(
@@ -23,8 +24,9 @@ class _MyBooksState extends State<MyBooks> {
         headers: {'Authorization': 'Token $token'},
       );
       if (response.statusCode == 200) {
+        // print(response.body);
         List jsonData = jsonDecode(response.body);
-        final map = jsonData.map((book) => Book.fromJSON(book)).toList();
+        final map = jsonData.map((book) => MyBook.fromJSON(book)).toList();
         return map;
       } else {
         return throw Exception();
@@ -46,7 +48,7 @@ class _MyBooksState extends State<MyBooks> {
           FutureBuilder(
             future: fetchMyBook(),
             builder: (context, snapshot) {
-              return BookList(book: snapshot.data, buttonWorking: false);
+              return MyBookList(book: snapshot.data, buttonWorking: false);
             },
           ),
         ],

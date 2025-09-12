@@ -30,9 +30,13 @@ class BookList extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: BookCard(book: book, i: i),
+                            child: BookCard(
+                              book: book,
+                              i: i,
+                              deleteButton: false,
+                            ),
                           )
-                        : BookCard(book: book, i: i),
+                        : BookCard(book: book, i: i, deleteButton: true),
                   );
           },
         ),

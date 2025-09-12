@@ -41,3 +41,49 @@ class Book {
 
   static fromJson(book) {}
 }
+
+class MyBook extends Book {
+  final int pk;
+  const MyBook({
+    required this.pk,
+    required String bookName,
+    required String imageUrl,
+    required String authorName,
+    required String publisherName,
+    required DateTime publishDate,
+    required String subject,
+    required int price,
+    required int discount,
+    required String preview,
+    required DateTime lastSold,
+  }) : super(
+         bookName: bookName,
+         imageUrl: imageUrl,
+         authorName: authorName,
+         publisherName: publisherName,
+         publishDate: publishDate,
+         subject: subject,
+         price: price,
+         discount: discount,
+         preview: preview,
+         lastSold: lastSold,
+       );
+
+  factory MyBook.fromJSON(Map<String, dynamic> map) {
+    return MyBook(
+      pk: map['pk'] as int,
+      bookName: map['name'] as String,
+      price: map['price'] as int,
+      publishDate: DateTime.parse(map['publish_date']),
+      lastSold: DateTime.parse(map['last_sold']),
+      imageUrl: map['image'] as String,
+      preview: map['preview'] as String,
+      authorName: map['author'] as String,
+      publisherName: map['publisher'] as String,
+      subject: map['subject'] as String,
+      discount: map['discount'] as int,
+    );
+  }
+
+  static fromJson(book) {}
+}
