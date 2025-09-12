@@ -1,5 +1,5 @@
 
-from rest_framework import generics,filters
+from rest_framework import generics,filters,mixins
 from .models import Book
 from .serializers import BookSerializer,MyBookSeralizer
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -21,9 +21,19 @@ class BookView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class MyBookView(generics.ListAPIView):
-    serializer_class=MyBookSeralizer
-    permission_classes=[IsAuthenticated]
 
+class MyBookView(generics.GenericAPIView, 
+                 mixins.ListModelMixin, 
+                 mixins.DestroyModelMixin):
+    serializer_class = MyBookSeralizer
+    permission_classes = [IsAuthenticated]
+
+    
     def get_queryset(self):
         return Book.objects.filter(user=self.request.user)
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request,*args,**kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)

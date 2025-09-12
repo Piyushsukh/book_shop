@@ -4,6 +4,7 @@ from .views import BookView,MyBookView
 
 urlpatterns = [
     path('',BookView.as_view()),
-    path('my-books/',MyBookView.as_view())
+    path('my-books/',MyBookView.as_view()),
+    path('my-books/<int:pk>/',MyBookView.as_view()),
 ]
 

@@ -58,6 +58,7 @@ class MyBookSeralizer(serializers.ModelSerializer):
     class  Meta:
         model=Book
         fields= (
+            'pk',
             'name',
             'price',
             'discount',
@@ -70,8 +71,3 @@ class MyBookSeralizer(serializers.ModelSerializer):
             'subject',
         )
 
-
-class SubjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Subject
-        fields='__all__'
