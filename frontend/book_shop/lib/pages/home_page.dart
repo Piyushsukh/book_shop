@@ -131,12 +131,22 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void refresh() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     selecteChip = 'All';
     check();
     getUserData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchFields.dispose();
   }
 
   @override
@@ -152,7 +162,7 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const AddBookPage(),
+                      builder: (context) => AddBookPage(onUpdate: refresh),
                     ),
                   );
                 },

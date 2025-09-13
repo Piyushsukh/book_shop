@@ -46,28 +46,17 @@ class MyBook extends Book {
   final int pk;
   const MyBook({
     required this.pk,
-    required String bookName,
-    required String imageUrl,
-    required String authorName,
-    required String publisherName,
-    required DateTime publishDate,
-    required String subject,
-    required int price,
-    required int discount,
-    required String preview,
-    required DateTime lastSold,
-  }) : super(
-         bookName: bookName,
-         imageUrl: imageUrl,
-         authorName: authorName,
-         publisherName: publisherName,
-         publishDate: publishDate,
-         subject: subject,
-         price: price,
-         discount: discount,
-         preview: preview,
-         lastSold: lastSold,
-       );
+    required super.bookName,
+    required super.imageUrl,
+    required super.authorName,
+    required super.publisherName,
+    required super.publishDate,
+    required super.subject,
+    required super.price,
+    required super.discount,
+    required super.preview,
+    required super.lastSold,
+  });
 
   factory MyBook.fromJSON(Map<String, dynamic> map) {
     return MyBook(

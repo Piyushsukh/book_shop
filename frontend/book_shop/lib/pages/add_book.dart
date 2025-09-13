@@ -9,7 +9,8 @@ import 'package:open_filex/open_filex.dart';
 import 'package:http/http.dart' as http;
 
 class AddBookPage extends StatefulWidget {
-  const AddBookPage({super.key});
+  final VoidCallback onUpdate;
+  const AddBookPage({super.key, required this.onUpdate});
 
   @override
   State<AddBookPage> createState() => _AddBookPageState();
@@ -72,7 +73,22 @@ class _AddBookPageState extends State<AddBookPage> {
 
   Future<void> _submitForm() async {
     if (_formkey.currentState!.validate()) {
-      createBook();
+      await createBook();
+      if (!mounted) return;
+      setState(() {
+        _image = null;
+        _preview = null;
+        _lastSoldDate = null;
+        _publishDate = null;
+        _nameController.clear();
+        _priceController.clear();
+        _discountController.clear();
+        _authorController.clear();
+        _publisherController.clear();
+        _subjectController.clear();
+        _formkey.currentState?.reset();
+      });
+      widget.onUpdate();
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(
@@ -144,6 +160,17 @@ class _AddBookPageState extends State<AddBookPage> {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _priceController.dispose();
+    _authorController.dispose();
+    _discountController.dispose();
+    _publisherController.dispose();
+    _subjectController.dispose();
   }
 
   @override

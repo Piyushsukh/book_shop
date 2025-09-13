@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
-import 'package:book_shop/pages/my_books.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -9,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:book_shop/details/bookdetails.dart';
 
 class MyBookCard extends StatefulWidget {
+  final VoidCallback onUpdate;
   final List<MyBook>? book;
   final int i;
   final bool deleteButton;
@@ -16,6 +16,7 @@ class MyBookCard extends StatefulWidget {
     super.key,
     this.book,
     required this.i,
+    required this.onUpdate,
     required this.deleteButton,
   });
 
@@ -31,7 +32,6 @@ class _MyBookCardState extends State<MyBookCard> {
         Uri.parse('$url/book/my-books/$i/'),
         headers: {'Authorization': 'Token $token'},
       );
-      print(response.body);
     } catch (e) {
       throw Exception(e);
     }
@@ -70,10 +70,9 @@ class _MyBookCardState extends State<MyBookCard> {
           if (widget.deleteButton)
             IconButton(
               color: Colors.red,
-              onPressed: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (context) => MyBooks()));
+              onPressed: () async {
+                await deleteBook(widget.book![widget.i].pk);
+                widget.onUpdate();
               },
               icon: Icon(Icons.delete),
             ),

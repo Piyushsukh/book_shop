@@ -63,13 +63,6 @@ class BookCard extends StatelessWidget {
               ],
             ),
           ),
-          if (deleteButton)
-            IconButton(
-              onPressed: () {
-                print(book);
-              },
-              icon: Icon(Icons.delete),
-            ),
         ],
       ),
     );
