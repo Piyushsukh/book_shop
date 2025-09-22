@@ -119,7 +119,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "10.123.193.143"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "10.21.96.24"]
 
 USE_TZ = True
 
