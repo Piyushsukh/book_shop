@@ -38,7 +38,7 @@ class BookCard extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0), // const added
+            padding: const EdgeInsets.all(12.0), 
             child: Image.network(
               book![i].imageUrl,
               width: 150,
@@ -51,11 +51,11 @@ class BookCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Title :${book![i].bookName}'),
-                const Divider(), // const added
+                const Divider(), 
                 Text('Author : ${book![i].authorName}'),
-                const Divider(), // const added
+                const Divider(), 
                 Text('Publisher : ${book![i].publisherName}'),
-                const Divider(), // const added
+                const Divider(), 
                 Text(
                   'Published Date :${DateFormat.yMMMd().format(book![i].publishDate)}',
                 ),

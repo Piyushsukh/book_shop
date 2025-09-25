@@ -1,2 +1,2 @@
-final url = 'http://10.21.96.24:8000';
+final url = 'http://192.168.137.1:8000/';
 bool isAuth = false;

@@ -29,7 +29,6 @@ class _HomeState extends State<Home> {
   String? subjectName;
   String? authorName;
   String? publisherName;
-
   Future<List<Subject>> fetchSubject() async {
     try {
       final response = await http.get(Uri.parse('$url/subjects/'));
@@ -195,9 +194,9 @@ class _HomeState extends State<Home> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const Cart()),
-                    );
+                    Navigator.of(
+                      context,
+                    ).push(MaterialPageRoute(builder: (context) => Cart()));
                   },
                   icon: const Icon(
                     Icons.shopping_cart,
@@ -232,7 +231,7 @@ class _HomeState extends State<Home> {
                         ? Text(
                             '''Welcome 
            ${user!['first_name']}''',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -240,9 +239,12 @@ class _HomeState extends State<Home> {
                           )
                         : null,
                   ),
-                  const ListTile(
-                    title: Text('Home'),
-                    leading: Icon(Icons.home),
+                  ListTile(
+                    title: const Text('Home'),
+                    leading: const Icon(Icons.home),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                   ListTile(
                     title: const Text('Profile'),
@@ -250,7 +252,7 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
+                          builder: (context) => ProfilePage(onUpdate: refresh),
                         ),
                       );
                     },
@@ -261,7 +263,7 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const SettingPage(),
+                          builder: (context) => SettingPage(onUpdate: refresh),
                         ),
                       );
                     },
@@ -316,6 +318,7 @@ class _HomeState extends State<Home> {
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
+
             child: TextField(
               controller: _searchFields,
               onChanged: (value) {
@@ -340,11 +343,234 @@ class _HomeState extends State<Home> {
             ),
           ),
           const SizedBox(height: 3),
-          // Chips row and FutureBuilders are runtime dependent, no const possible
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'All';
+                    subjectName = null;
+                    authorName = null;
+                    publisherName = null;
+                  });
+                },
+                child: Chip(
+                  label: Text(
+                    'All',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  backgroundColor: selecteChip == 'All'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'Types';
+                    authorName = null;
+                    publisherName = null;
+                  });
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Types'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        height: 300,
+                        child: FutureBuilder(
+                          future: fetchSubject(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Error: ${snapshot.error}"),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      subjectName = snapshot.data![i].name;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Text(snapshot.data![i].name),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Chip(
+                  label: Text(
+                    'Types',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: selecteChip == 'Types'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'Author';
+                    subjectName = null;
+                    publisherName = null;
+                  });
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Author'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        height: 300,
+                        child: FutureBuilder(
+                          future: fetchAuthor(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Error: ${snapshot.error}"),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      authorName = snapshot.data![i].name;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Text(snapshot.data![i].name),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Chip(
+                  label: Text(
+                    'Author',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: selecteChip == 'Author'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selecteChip = 'Publisher';
+                    authorName = null;
+                    subjectName = null;
+                  });
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Publishers'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        height: 300,
+                        child: FutureBuilder(
+                          future: fetchPublisher(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Error: ${snapshot.error}"),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      publisherName = snapshot.data![i].name;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Text(snapshot.data![i].name),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Chip(
+                  label: Text(
+                    'Publisher',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: selecteChip == 'Publisher'
+                      ? Theme.of(context).colorScheme.secondary
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
+              ),
+            ],
+          ),
           FutureBuilder(
             future: fetchBook(),
             builder: (context, snapshot) {
-              bool b = isAuth;
+              bool b = true;
+              if (!isAuth) {
+                b = false;
+              }
               return BookList(book: snapshot.data, buttonWorking: b);
             },
           ),

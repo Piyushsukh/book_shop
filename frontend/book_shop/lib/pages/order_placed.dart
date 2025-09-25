@@ -7,7 +7,7 @@ class OrderPlaced extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
+    return  Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -17,13 +17,13 @@ class OrderPlaced extends StatelessWidget {
                 width: double.infinity,
                 height: 80,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(3),
                     topRight: Radius.circular(3),
                   ),
                   color: const Color.fromARGB(255, 9, 166, 48),
                 ),
-                child: Text(
+                child: const Text(
                   'Order Placed',
                   style: TextStyle(
                     color: Colors.white,
@@ -32,42 +32,41 @@ class OrderPlaced extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Icon(
+              const SizedBox(height: 20),
+              const Icon(
                 Icons.check_circle_outline,
-                color: const Color.fromARGB(255, 17, 142, 21),
+                color: Color.fromARGB(255, 17, 142, 21),
                 size: 200,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Thank you!',
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SizedBox(
                 width: size.width / 1.4,
-                child: Text(
+                child: const Text(
                   'Your order has been placed successfully. It will be delivered to your address soon. Please keep cash ready for delivery.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
               ),
-              SizedBox(height: 60),
+              const SizedBox(height: 60),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => const Home()),
                   );
                 },
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(7),
+                    borderRadius: BorderRadius.circular(7),
                   ),
                   backgroundColor: const Color.fromARGB(255, 9, 166, 48),
                   minimumSize: Size(size.width / 2, 60),
                 ),
-
-                child: Text(
+                child: const Text(
                   'Back To Home',
                   style: TextStyle(color: Colors.white),
                 ),

@@ -7,7 +7,8 @@ import 'package:book_shop/pages/my_books.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final VoidCallback onUpdate;
+  const ProfilePage({super.key,required this.onUpdate});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -42,6 +43,8 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     getUserData();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
               leading: const Icon(Icons.book_sharp, color: Colors.deepPurple),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const MyBooks()),
+                  MaterialPageRoute(builder: (context) =>  MyBooks(onUpdate:widget.onUpdate,)),
                 );
               },
             ),

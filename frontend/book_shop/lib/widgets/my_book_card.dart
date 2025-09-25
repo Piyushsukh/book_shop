@@ -32,6 +32,8 @@ class _MyBookCardState extends State<MyBookCard> {
         Uri.parse('$url/book/my-books/$i/'),
         headers: {'Authorization': 'Token $token'},
       );
+      if (!mounted) return;
+      Navigator.of(context).pop();
     } catch (e) {
       throw Exception(e);
     }
@@ -43,12 +45,12 @@ class _MyBookCardState extends State<MyBookCard> {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0), // const here
+            padding: const EdgeInsets.all(12.0),
             child: Image.network(
               widget.book![widget.i].imageUrl,
               width: 150,
               height: 200,
-              fit: BoxFit.cover, // order doesn't matter, const not needed here
+              fit: BoxFit.cover,
             ),
           ),
           Flexible(
@@ -56,11 +58,11 @@ class _MyBookCardState extends State<MyBookCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Title :${widget.book![widget.i].bookName}'),
-                const Divider(), // const here
+                const Divider(),
                 Text('Author : ${widget.book![widget.i].authorName}'),
-                const Divider(), // const here
+                const Divider(),
                 Text('Publisher : ${widget.book![widget.i].publisherName}'),
-                const Divider(), // const here
+                const Divider(),
                 Text(
                   'Published Date :${DateFormat.yMMMd().format(widget.book![widget.i].publishDate)}',
                 ),
@@ -70,11 +72,40 @@ class _MyBookCardState extends State<MyBookCard> {
           if (widget.deleteButton)
             IconButton(
               color: Colors.red,
-              onPressed: () async {
-                await deleteBook(widget.book![widget.i].pk);
-                widget.onUpdate();
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      'Delete book',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    content: Text(
+                      'Are you sure',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Close',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await deleteBook(widget.book![widget.i].pk);
+                          widget.onUpdate();
+                        },
+                        child: Text('Ok', style: TextStyle(color: Colors.blue)),
+                      ),
+                    ],
+                  ),
+                );
               },
-              icon: const Icon(Icons.delete), // const here
+              icon: const Icon(Icons.delete),
             ),
         ],
       ),

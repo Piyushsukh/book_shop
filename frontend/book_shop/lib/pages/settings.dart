@@ -5,7 +5,8 @@ import 'package:book_shop/pages/profile.dart';
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+  final VoidCallback onUpdate;
+  const SettingPage({super.key, required this.onUpdate});
 
   @override
   State<SettingPage> createState() => _SettingPageState();
@@ -51,7 +52,9 @@ class _SettingPageState extends State<SettingPage> {
             subtitle: const Text('Manage your account details'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(onUpdate: widget.onUpdate),
+                ),
               );
             },
           ),

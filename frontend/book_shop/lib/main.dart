@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        appBarTheme: AppBarThemeData(
+        appBarTheme: const AppBarThemeData(
           elevation: 0,
-          backgroundColor: const Color.fromARGB(255, 131, 4, 154),
+          backgroundColor: Color.fromARGB(255, 131, 4, 154),
         ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurpleAccent,

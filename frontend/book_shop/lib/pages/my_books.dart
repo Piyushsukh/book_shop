@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class MyBooks extends StatefulWidget {
-  const MyBooks({super.key});
+  final VoidCallback onUpdate;
+  const MyBooks({super.key, required this.onUpdate});
 
   @override
   State<MyBooks> createState() => _MyBooksState();
@@ -17,6 +18,7 @@ class MyBooks extends StatefulWidget {
 class _MyBooksState extends State<MyBooks> {
   void refresh() {
     setState(() {});
+    widget.onUpdate();
   }
 
   Future<List<MyBook>> fetchMyBook() async {
