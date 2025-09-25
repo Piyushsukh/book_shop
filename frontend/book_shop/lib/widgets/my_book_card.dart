@@ -43,12 +43,12 @@ class _MyBookCardState extends State<MyBookCard> {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0), // const here
             child: Image.network(
-              fit: BoxFit.cover,
               widget.book![widget.i].imageUrl,
               width: 150,
               height: 200,
+              fit: BoxFit.cover, // order doesn't matter, const not needed here
             ),
           ),
           Flexible(
@@ -56,11 +56,11 @@ class _MyBookCardState extends State<MyBookCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Title :${widget.book![widget.i].bookName}'),
-                Divider(),
+                const Divider(), // const here
                 Text('Author : ${widget.book![widget.i].authorName}'),
-                Divider(),
+                const Divider(), // const here
                 Text('Publisher : ${widget.book![widget.i].publisherName}'),
-                Divider(),
+                const Divider(), // const here
                 Text(
                   'Published Date :${DateFormat.yMMMd().format(widget.book![widget.i].publishDate)}',
                 ),
@@ -74,7 +74,7 @@ class _MyBookCardState extends State<MyBookCard> {
                 await deleteBook(widget.book![widget.i].pk);
                 widget.onUpdate();
               },
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete), // const here
             ),
         ],
       ),

@@ -21,26 +21,24 @@ class _SignInState extends State<SignIn> {
         textEditingController[4].text,
         textEditingController[5].text,
       );
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
       if (data['key'] != null) {
-        Navigator.of(
-          context,
-        ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Registered Successfully')));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const Home()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registered Successfully')),
+        );
       }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Registration failed')));
+      ).showSnackBar(const SnackBar(content: Text('Registration failed')));
     }
   }
 
-  List<String> textField = [
+  final List<String> textField = const [
     "First name",
     "Last name",
     "Username",
@@ -49,7 +47,8 @@ class _SignInState extends State<SignIn> {
     "Confirm password",
   ];
 
-  List<TextEditingController> textEditingController = [];
+  final List<TextEditingController> textEditingController = [];
+
   @override
   void initState() {
     super.initState();
@@ -63,7 +62,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Sign Up',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -73,11 +72,11 @@ class _SignInState extends State<SignIn> {
           border: Border.all(width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: EdgeInsets.all(26),
-        margin: EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 50),
+        padding: const EdgeInsets.all(26),
+        margin: const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 50),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Sign Up',
               style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
             ),
@@ -90,17 +89,17 @@ class _SignInState extends State<SignIn> {
                     children: [
                       Text(
                         textField[index],
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
                         controller: textEditingController[index],
                         decoration: InputDecoration(
                           hintText: textField[index],
-                          enabledBorder: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(),
+                          enabledBorder: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   );
                 },
@@ -109,28 +108,28 @@ class _SignInState extends State<SignIn> {
             ElevatedButton(
               onPressed: _handlesignup,
               style: ElevatedButton.styleFrom(
-                maximumSize: Size(double.infinity, 50),
+                maximumSize: const Size(double.infinity, 50),
               ),
-              child: Text('Sign Up'),
+              child: const Text('Sign Up'),
             ),
-            SizedBox(height: 10),
-            Text('OR', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
+            const Text('OR', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                maximumSize: Size(double.infinity, 50),
+                maximumSize: const Size(double.infinity, 50),
               ),
-              child: Text('Sign in with Google'),
+              child: const Text('Sign in with Google'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
-                Text('Have an account?'),
+                const Text('Have an account?'),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LogIn()),
+                      MaterialPageRoute(builder: (context) => const LogIn()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -138,7 +137,7 @@ class _SignInState extends State<SignIn> {
                     splashFactory: NoSplash.splashFactory,
                     padding: EdgeInsets.zero,
                   ),
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),

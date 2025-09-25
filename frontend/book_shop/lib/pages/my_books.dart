@@ -16,7 +16,6 @@ class MyBooks extends StatefulWidget {
 
 class _MyBooksState extends State<MyBooks> {
   void refresh() {
-    print('page');
     setState(() {});
   }
 
@@ -28,7 +27,6 @@ class _MyBooksState extends State<MyBooks> {
         headers: {'Authorization': 'Token $token'},
       );
       if (response.statusCode == 200) {
-        // print(response.body);
         List jsonData = jsonDecode(response.body);
         final map = jsonData.map((book) => MyBook.fromJSON(book)).toList();
         return map;
@@ -44,12 +42,12 @@ class _MyBooksState extends State<MyBooks> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('My books', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('My books', style: TextStyle(color: Colors.white)),
       ),
       body: Column(
         children: [
-          FutureBuilder(
+          FutureBuilder<List<MyBook>>(
             future: fetchMyBook(),
             builder: (context, snapshot) {
               return MyBookList(

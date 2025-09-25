@@ -23,14 +23,14 @@ class _CheckOutPageState extends State<CheckOutPage> {
     if (selectedValue == 'Cod') {
       if (_formkey.currentState!.validate()) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => OrderPlaced()),
+          MaterialPageRoute(builder: (context) => const OrderPlaced()),
           (r) => false,
         );
       }
     } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Please select payment method')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select payment method')),
+      );
     }
   }
 
@@ -38,22 +38,22 @@ class _CheckOutPageState extends State<CheckOutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Checkout', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Checkout', style: TextStyle(color: Colors.white)),
       ),
       body: Padding(
-        padding: EdgeInsets.all(18),
+        padding: const EdgeInsets.all(18),
         child: Form(
           key: _formkey,
           child: ListView(
             children: [
-              Text(
+              const Text(
                 'Address',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-              SizedBox(height: 6),
+              const SizedBox(height: 6),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(),
@@ -66,10 +66,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(),
@@ -82,10 +82,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 maxLines: 3,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(),
@@ -98,9 +98,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(),
@@ -113,10 +113,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(),
@@ -129,31 +129,33 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 15),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 'Order summary',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Total:',
                     style: TextStyle(fontWeight: FontWeight.w300, fontSize: 23),
                   ),
                   Text(
                     '₹${widget.totalPrice}',
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 23),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 23,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 15),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 'Payment',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-
               RadioListTile.adaptive(
                 value: 'Cod',
                 groupValue: selectedValue,
@@ -162,12 +164,12 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     selectedValue = 'Cod';
                   });
                 },
-                title: Text(
+                title: const Text(
                   'Cash on delivery',
                   style: TextStyle(fontWeight: FontWeight.w400),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               CustomButton(text: 'Place order', onPressed: _submitButton),
             ],
           ),

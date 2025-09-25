@@ -16,8 +16,8 @@ class _CartState extends ConsumerState<Cart> {
     final list = ref.watch(cartProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart', style: TextStyle(color: Colors.white)),
-        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text('Cart', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [
@@ -39,14 +39,14 @@ class _CartState extends ConsumerState<Cart> {
                     ),
                     title: Text(
                       list[i].name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                     ),
                     subtitle: Text(
                       list[i].author,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -63,11 +63,11 @@ class _CartState extends ConsumerState<Cart> {
                                   .removeItem(list[i]);
                             });
                           },
-                          icon: Icon(Icons.remove_outlined),
+                          icon: const Icon(Icons.remove_outlined),
                         ),
                         Text(
                           list[i].quantity.toString(),
-                          style: TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 20),
                         ),
                         IconButton(
                           onPressed: () {
@@ -75,7 +75,7 @@ class _CartState extends ConsumerState<Cart> {
                               ref.read(cartProvider.notifier).addItem(list[i]);
                             });
                           },
-                          icon: Icon(Icons.add_outlined),
+                          icon: const Icon(Icons.add_outlined),
                         ),
                       ],
                     ),
@@ -85,14 +85,14 @@ class _CartState extends ConsumerState<Cart> {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
               ),
-              color: const Color.fromARGB(255, 208, 207, 207),
+              color: Color.fromARGB(255, 208, 207, 207),
             ),
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
@@ -100,29 +100,29 @@ class _CartState extends ConsumerState<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Subtotal', style: TextStyle(fontSize: 20)),
+                      const Text('Subtotal', style: TextStyle(fontSize: 20)),
                       Text(
                         '₹${ref.read(cartProvider.notifier).subTotal()}',
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Discount', style: TextStyle(fontSize: 20)),
+                      const Text('Discount', style: TextStyle(fontSize: 20)),
                       Text(
                         '₹${ref.read(cartProvider.notifier).totalDiscount()}',
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Total',
                         style: TextStyle(
                           fontSize: 20,
@@ -131,14 +131,14 @@ class _CartState extends ConsumerState<Cart> {
                       ),
                       Text(
                         '₹${ref.read(cartProvider.notifier).total()}',
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
+                      minimumSize: const Size(double.infinity, 50),
                     ),
                     onPressed: () {
                       Navigator.of(context).push(
@@ -152,7 +152,7 @@ class _CartState extends ConsumerState<Cart> {
                         ),
                       );
                     },
-                    child: Text('Checkout'),
+                    child: const Text('Checkout'),
                   ),
                 ],
               ),

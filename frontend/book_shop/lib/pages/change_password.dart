@@ -9,8 +9,8 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  List<String> textField = ['Old password', 'New password'];
-  List<TextEditingController> textEditingController = [];
+  final List<String> textField = const ['Old password', 'New password'];
+  final List<TextEditingController> textEditingController = [];
 
   Future<void> changePass() async {
     final cP = await changePassword(
@@ -20,14 +20,14 @@ class _ChangePasswordState extends State<ChangePassword> {
 
     if (cP) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Password changed successfully!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password changed successfully!')),
+      );
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Password change failed')));
+      ).showSnackBar(const SnackBar(content: Text('Password change failed')));
     }
   }
 
@@ -45,7 +45,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Change your password',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -55,7 +55,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           border: Border.all(width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: EdgeInsets.all(26),
+        padding: const EdgeInsets.all(26),
         margin: EdgeInsets.only(
           left: 20,
           right: 20,
@@ -64,11 +64,11 @@ class _ChangePasswordState extends State<ChangePassword> {
         ),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Change your password',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Flexible(
               child: ListView.builder(
                 itemCount: textField.length,
@@ -78,17 +78,17 @@ class _ChangePasswordState extends State<ChangePassword> {
                     children: [
                       Text(
                         textField[index],
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
                         controller: textEditingController[index],
                         decoration: InputDecoration(
                           hintText: textField[index],
-                          enabledBorder: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(),
+                          enabledBorder: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   );
                 },
@@ -97,9 +97,9 @@ class _ChangePasswordState extends State<ChangePassword> {
             ElevatedButton(
               onPressed: changePass,
               style: ElevatedButton.styleFrom(
-                maximumSize: Size(double.infinity, 50),
+                maximumSize: const Size(double.infinity, 50),
               ),
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),

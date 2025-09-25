@@ -47,6 +47,7 @@ class _AddBookPageState extends State<AddBookPage> {
       request.fields['last_sold'] = DateFormat(
         'yyyy-MM-dd',
       ).format(_lastSoldDate!);
+
       if (_image != null) {
         request.files.add(
           await http.MultipartFile.fromPath('image', _image!.path),
@@ -56,15 +57,15 @@ class _AddBookPageState extends State<AddBookPage> {
         request.files.add(
           await http.MultipartFile.fromPath('preview', _preview!.path),
         );
+      }
 
-        final response = await request.send();
+      final response = await request.send();
 
-        if (response.statusCode == 201) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Book is created')));
-        }
+      if (response.statusCode == 201) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Book is created')));
       }
     } catch (e) {
       throw Exception(e);
@@ -93,7 +94,7 @@ class _AddBookPageState extends State<AddBookPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Form is invalid')));
+      ).showSnackBar(const SnackBar(content: Text('Form is invalid')));
     }
   }
 
@@ -114,15 +115,11 @@ class _AddBookPageState extends State<AddBookPage> {
   }
 
   void _openImage() async {
-    if (_image != null) {
-      await OpenFilex.open(_image!.path);
-    }
+    if (_image != null) await OpenFilex.open(_image!.path);
   }
 
   void _openPreview() async {
-    if (_preview != null) {
-      await OpenFilex.open(_preview!.path);
-    }
+    if (_preview != null) await OpenFilex.open(_preview!.path);
   }
 
   Future<void> _imagePick() async {
@@ -139,7 +136,7 @@ class _AddBookPageState extends State<AddBookPage> {
     }
   }
 
-  Future<void> _pickDate(bool a) async {
+  Future<void> _pickDate(bool isPublish) async {
     try {
       final pickedDate = await showDatePicker(
         context: context,
@@ -148,15 +145,13 @@ class _AddBookPageState extends State<AddBookPage> {
         initialDate: DateTime.now(),
       );
       if (pickedDate == null) return;
-      if (a) {
-        setState(() {
+      setState(() {
+        if (isPublish) {
           _publishDate = pickedDate;
-        });
-      } else {
-        setState(() {
+        } else {
           _lastSoldDate = pickedDate;
-        });
-      }
+        }
+      });
     } catch (e) {
       throw Exception(e);
     }
@@ -164,140 +159,110 @@ class _AddBookPageState extends State<AddBookPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _nameController.dispose();
     _priceController.dispose();
     _authorController.dispose();
     _discountController.dispose();
     _publisherController.dispose();
     _subjectController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Add book', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Add book', style: TextStyle(color: Colors.white)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12),
         child: Form(
           key: _formkey,
           child: ListView(
             children: [
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter name';
-                  }
-                  return null;
-                },
+                decoration: const InputDecoration(labelText: 'Name'),
+                validator: (value) => value!.isEmpty ? 'Enter name' : null,
                 controller: _nameController,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.number,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration: const InputDecoration(labelText: 'Price'),
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter price';
-                  } else if (int.tryParse(value) == null) {
-                    return 'Enter valid price';
-                  }
+                  if (value!.isEmpty) return 'Enter price';
+                  if (int.tryParse(value) == null) return 'Enter valid price';
                   return null;
                 },
                 controller: _priceController,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.number,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Discount'),
+                decoration: const InputDecoration(labelText: 'Discount'),
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter discount';
-                  } else if (int.tryParse(value) == null) {
+                  if (value!.isEmpty) return 'Enter discount';
+                  if (int.tryParse(value) == null)
                     return 'Enter valid discount';
-                  }
                   return null;
                 },
                 controller: _discountController,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Author'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter author\'s name';
-                  }
-                  return null;
-                },
+                decoration: const InputDecoration(labelText: 'Author'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter author\'s name' : null,
                 controller: _authorController,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Publisher'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter publisher\'s name';
-                  }
-                  return null;
-                },
+                decoration: const InputDecoration(labelText: 'Publisher'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter publisher\'s name' : null,
                 controller: _publisherController,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(labelText: 'Type of book'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter Type';
-                  }
-                  return null;
-                },
+                decoration: const InputDecoration(labelText: 'Type of book'),
+                validator: (value) => value!.isEmpty ? 'Enter Type' : null,
                 controller: _subjectController,
               ),
-              SizedBox(height: 20),
-
+              const SizedBox(height: 20),
               ListTile(
                 title: Text(
                   "Publish Date: ${_publishDate == null ? 'Not selected' : DateFormat('yyyy-MM-dd').format(_publishDate!)}",
                 ),
                 trailing: IconButton(
-                  onPressed: () async {
-                    await _pickDate(true);
-                  },
-                  icon: Icon(Icons.calendar_today),
+                  onPressed: () => _pickDate(true),
+                  icon: const Icon(Icons.calendar_today),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ListTile(
                 title: Text(
                   "Last Sold date: ${_lastSoldDate == null ? 'Not selected' : DateFormat('yyyy-MM-dd').format(_lastSoldDate!)}",
                 ),
                 trailing: IconButton(
-                  onPressed: () {
-                    _pickDate(false);
-                  },
-                  icon: Icon(Icons.calendar_today),
+                  onPressed: () => _pickDate(false),
+                  icon: const Icon(Icons.calendar_today),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      _imagePick();
-                    },
-                    child: Text('Pick image'),
+                    onPressed: _imagePick,
+                    child: const Text('Pick image'),
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   if (_image != null)
                     TextButton(
                       onPressed: _openImage,
@@ -306,23 +271,23 @@ class _AddBookPageState extends State<AddBookPage> {
                         splashFactory: NoSplash.splashFactory,
                         padding: EdgeInsets.zero,
                       ),
-                      child: Text(
+                      child: const Text(
                         "Open",
                         style: TextStyle(decoration: TextDecoration.underline),
                       ),
                     ),
-
-                  if (_image != null) Icon(Icons.check, color: Colors.green),
+                  if (_image != null)
+                    const Icon(Icons.check, color: Colors.green),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   ElevatedButton(
                     onPressed: _pickPreview,
-                    child: Text('Preview file'),
+                    child: const Text('Preview file'),
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   if (_preview != null)
                     TextButton(
                       onPressed: _openPreview,
@@ -331,23 +296,24 @@ class _AddBookPageState extends State<AddBookPage> {
                         splashFactory: NoSplash.splashFactory,
                         padding: EdgeInsets.zero,
                       ),
-                      child: Text(
+                      child: const Text(
                         "Open",
                         style: TextStyle(decoration: TextDecoration.underline),
                       ),
                     ),
-                  if (_preview != null) Icon(Icons.check, color: Colors.green),
+                  if (_preview != null)
+                    const Icon(Icons.check, color: Colors.green),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Align(
-                alignment: AlignmentGeometry.center,
+                alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: _submitForm,
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(150, 40),
                   ),
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                 ),
               ),
             ],

@@ -10,7 +10,7 @@ class PDFViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('PDF Viewer', style: TextStyle(color: Colors.white)),
       ),
       body: SfPdfViewer.network(

@@ -26,12 +26,12 @@ class _MyBookListState extends State<MyBookList> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(6),
+        padding: EdgeInsets.all(6),
         child: ListView.builder(
           itemCount: widget.book == null ? 0 : widget.book!.length,
           itemBuilder: (context, i) {
             return widget.book == null
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: MyBookCard(

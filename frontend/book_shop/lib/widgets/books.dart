@@ -17,7 +17,7 @@ class BookList extends StatelessWidget {
           itemCount: book == null ? 0 : book!.length,
           itemBuilder: (context, i) {
             return book == null
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: buttonWorking

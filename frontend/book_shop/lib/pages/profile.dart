@@ -47,15 +47,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('My Account', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('My Account', style: TextStyle(color: Colors.white)),
       ),
       body: Center(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(14.0),
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 backgroundColor: Colors.black87,
                 radius: 50,
                 child: Icon(Icons.person, size: 50, color: Colors.white),
@@ -64,37 +64,45 @@ class _ProfilePageState extends State<ProfilePage> {
             user != null
                 ? Text(
                     '${user!['first_name']} ${user!['last_name']}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   )
-                : CircularProgressIndicator(),
+                : const CircularProgressIndicator(),
             user != null
                 ? Text(
                     user!['email'],
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
                   )
-                : CircularProgressIndicator(),
-            Divider(color: Colors.grey),
+                : const CircularProgressIndicator(),
+            const Divider(color: Colors.grey),
             ListTile(
-              title: Text('My books'),
-              leading: Icon(Icons.book_sharp, color: Colors.deepPurple),
-              onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (context) => MyBooks()));
-              },
-            ),
-            ListTile(
-              title: Text('Change Password'),
-              leading: Icon(Icons.lock, color: Colors.deepPurple),
+              title: const Text('My books'),
+              leading: const Icon(Icons.book_sharp, color: Colors.deepPurple),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ChangePassword()),
+                  MaterialPageRoute(builder: (context) => const MyBooks()),
                 );
               },
             ),
             ListTile(
-              title: Text('Log out'),
-              leading: Icon(Icons.logout, color: Colors.red),
+              title: const Text('Change Password'),
+              leading: const Icon(Icons.lock, color: Colors.deepPurple),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ChangePassword(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Log out'),
+              leading: const Icon(Icons.logout, color: Colors.red),
               onTap: () {
                 showDialog(
                   context: context,
@@ -113,8 +121,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => Home()),
-                              (route) => false, // remove all previous routes
+                              MaterialPageRoute(
+                                builder: (context) => const Home(),
+                              ),
+                              (route) => false,
                             );
                             logOut();
                           },

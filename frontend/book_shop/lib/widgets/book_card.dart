@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +38,12 @@ class BookCard extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0), // const added
             child: Image.network(
-              fit: BoxFit.cover,
               book![i].imageUrl,
               width: 150,
               height: 200,
+              fit: BoxFit.cover,
             ),
           ),
           Flexible(
@@ -52,11 +51,11 @@ class BookCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Title :${book![i].bookName}'),
-                Divider(),
+                const Divider(), // const added
                 Text('Author : ${book![i].authorName}'),
-                Divider(),
+                const Divider(), // const added
                 Text('Publisher : ${book![i].publisherName}'),
-                Divider(),
+                const Divider(), // const added
                 Text(
                   'Published Date :${DateFormat.yMMMd().format(book![i].publishDate)}',
                 ),

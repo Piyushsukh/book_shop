@@ -19,29 +19,27 @@ class _LogInState extends State<LogIn> {
         textEditingController[0].text,
         textEditingController[1].text,
       );
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
       if (data['token'] != null) {
         isAuth = true;
-        Navigator.of(
-          context,
-        ).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const Home()),
+        );
 
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Logged In Successfully')));
+        ).showSnackBar(const SnackBar(content: Text('Logged In Successfully')));
       }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Invalid credentials')));
+      ).showSnackBar(const SnackBar(content: Text('Invalid credentials')));
     }
   }
 
-  List<String> textField = ['Username', 'Password'];
-  List<TextEditingController> textEditingController = [];
+  final List<String> textField = const ['Username', 'Password'];
+  final List<TextEditingController> textEditingController = [];
 
   @override
   void initState() {
@@ -57,7 +55,7 @@ class _LogInState extends State<LogIn> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Log In',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -67,7 +65,7 @@ class _LogInState extends State<LogIn> {
           border: Border.all(width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: EdgeInsets.all(26),
+        padding: const EdgeInsets.all(26),
         margin: EdgeInsets.only(
           left: 20,
           right: 20,
@@ -76,7 +74,7 @@ class _LogInState extends State<LogIn> {
         ),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Log In',
               style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
             ),
@@ -89,17 +87,17 @@ class _LogInState extends State<LogIn> {
                     children: [
                       Text(
                         textField[index],
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
                         controller: textEditingController[index],
                         decoration: InputDecoration(
                           hintText: textField[index],
-                          enabledBorder: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(),
+                          enabledBorder: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   );
                 },
@@ -108,28 +106,28 @@ class _LogInState extends State<LogIn> {
             ElevatedButton(
               onPressed: _handlelogin,
               style: ElevatedButton.styleFrom(
-                maximumSize: Size(double.infinity, 50),
+                maximumSize: const Size(double.infinity, 50),
               ),
-              child: Text('Log In'),
+              child: const Text('Log In'),
             ),
-            SizedBox(height: 10),
-            Text('OR', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
+            const Text('OR', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                maximumSize: Size(double.infinity, 50),
+                maximumSize: const Size(double.infinity, 50),
               ),
-              child: Text('Sign in with Google'),
+              child: const Text('Sign in with Google'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
-                Text('Don\'t have an account?'),
+                const Text('Don\'t have an account?'),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => SignIn()),
+                      MaterialPageRoute(builder: (context) => const SignIn()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -137,7 +135,7 @@ class _LogInState extends State<LogIn> {
                     splashFactory: NoSplash.splashFactory,
                     padding: EdgeInsets.zero,
                   ),
-                  child: Text(
+                  child: const Text(
                     "Signup",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
