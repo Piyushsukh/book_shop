@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:book_shop/Secrets/secret.dart';
 import 'package:book_shop/auth_service/auth_service.dart';
 import 'package:flutter/material.dart';
